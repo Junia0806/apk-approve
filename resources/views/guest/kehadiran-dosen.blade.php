@@ -5,77 +5,98 @@
         <!-- Table Content -->
         <div class="overflow-x-auto bg-white rounded-lg shadow-lg border border-gray-200">
             <div class="text-center mb-4 mt-4">
-                <h1 class="text-2xl font-bold">Sistem Informasi Status Kehadiran Dosen</h1>
+                <h1 class="text-2xl font-bold">Status Ketersediaan Sesi Bimbingan Dosen</h1>
+                <p class="text-gray-500">Kampus 4 Sidoarjo | Jurusan Teknologi Informasi | Prodi Teknik Informatika</p>
             </div>
-              <!-- Search Bar -->
-              <div class="flex flex-col sm:flex-row justify-center items-center mb-6 w-full">
-                <form class="w-full max-w-md">
-                    <label for="search-input" class="sr-only">Search</label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                            <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M21 21l-4.35-4.35M16 10a6 6 0 11-12 0 6 6 0 0112 0z"></path>
-                            </svg>
+
+            <!-- Filter by Date -->
+            <div class="flex justify-center items-center mb-6 w-full">
+                <form class="w-full max-w-lg" method="GET">
+                    <div class="flex flex-col sm:flex-row items-center justify-center w-full">
+                        <label for="tanggal" class="text-base font-semibold text-gray-800 mb-2 sm:mb-0 sm:mr-4">
+                            Tampilkan Berdasarkan Tanggal
+                        </label>
+                        <div class="relative flex items-center w-full sm:w-auto">
+                            <input type="date" name="tanggal" id="tanggal" value="2024-11-11"
+                                class="w-full sm:w-40 pl-4 py-2 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-blue-600 focus:border-blue-600"
+                                required>
                         </div>
-                        <input type="search" id="search-input" placeholder="Temukan dosen disini..."
-                            class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-blue-600 focus:border-blue-600"
-                            required>
                         <button type="submit"
-                            class="absolute right-2.5 bottom-1.5 text-sm px-4 py-1 mt-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none">Search</button>
+                            class="mt-2 sm:mt-0 sm:ml-4 text-sm px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none">
+                            Cari
+                        </button>
                     </div>
                 </form>
             </div>
+
+
+            <!-- Table -->
             <table class="w-full border-separate border-spacing-0 text-sm text-gray-800">
                 <thead class="bg-gray-200 text-gray-800">
                     <tr>
-                        <th class="px-4 py-2 text-left">Kampus</th>
-                        <th class="px-4 py-2 text-left">Jurusan</th>
-                        <th class="px-4 py-2 text-left">Prodi</th>
-                        <th class="px-4 py-2 text-left">Dosen</th>
-                        <th class="px-4 py-2 text-left">Hari</th>
-                        <th class="px-4 py-2 text-left">Jam</th>
-                        <th class="px-4 py-2 text-left">Status</th>
-                        <th class="px-4 py-2 text-left">Ketersediaan Waktu</th>
+                        <th class="px-2 py-1 text-left">Dosen</th>
+                        <th class="px-2 py-1 text-left">08:00 - 09:00</th>
+                        <th class="px-2 py-1 text-left">09:00 - 10:00</th>
+                        <th class="px-2 py-1 text-left">10:00 - 11:00</th>
+                        <th class="px-2 py-1 text-left">11:00 - 11:00</th>
+                        <th class="px-1 py-1 text-left bg-gray-300">11:00 - 13:00</th>
+                        <th class="px-2 py-1 text-left">13:00 - 14:00</th>
+                        <th class="px-2 py-1 text-left">14:00 - 15:00</th>
+                        <th class="px-2 py-1 text-left">15:00 - 16:00</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white">
                     @php
                         $jadwal = [
                             [
-                                'kampus' => 'Universitas A',
-                                'jurusan' => 'Teknologi Informasi',
-                                'prodi' => 'Teknik Informatika',
-                                'dosen' => 'Dr. John Doe',
-                                'hari' => 'Senin',
-                                'jam' => '08:00 - 10:00',
-                                'status' => 'Hadir',
-                                'ketersediaan' => 'Tersedia',
+                                'dosen' => 'Rifqi Aji Widarso, S.T. M.T.',
+                                'waktu' => [
+                                    '08:00 - 09:00' => 'Tidak Tersedia',
+                                    '09:00 - 10:00' => 'Tidak Tersedia',
+                                    '10:00 - 11:00' => 'Tidak Tersedia',
+                                    '11:00 - 12:00' => 'Tersedia',
+                                    '12:00 - 13:00' => 'Istirahat',
+                                    '13:00 - 14:00' => 'Tersedia',
+                                    '14:00 - 15:00' => 'Tersedia',
+                                    '15:00 - 16:00' => 'Tidak Tersedia',
+                                ],
                             ],
                             [
-                                'kampus' => 'Universitas B',
-                                'jurusan' => 'Manajemen Agribisnis',
-                                'prodi' => 'Manajemen Agribisnis',
-                                'dosen' => 'Prof. Jane Doe',
-                                'hari' => 'Selasa',
-                                'jam' => '10:00 - 12:00',
-                                'status' => 'Hadir',
-                                'ketersediaan' => 'Penuh',
+                                'dosen' => 'Adi Sucipto, S.ST., M.Tr.T.',
+                                'waktu' => [
+                                    '08:00 - 09:00' => 'Tidak Tersedia',
+                                    '09:00 - 10:00' => 'Tidak Tersedia',
+                                    '10:00 - 11:00' => 'Tidak Tersedia',
+                                    '11:00 - 12:00' => 'Tidak Tersedia',
+                                    '12:00 - 13:00' => 'Istirahat',
+                                    '13:00 - 14:00' => 'Tidak Tersedia',
+                                    '14:00 - 15:00' => 'Tidak Tersedia',
+                                    '15:00 - 16:00' => 'Tidak Tersedia',
+                                ],
                             ],
-                            // Tambahkan data lain sesuai kebutuhan
+                            [
+                                'dosen' => 'Rani Purbaningtyas, S.Kom., MT.',
+                                'waktu' => [
+                                    '08:00 - 09:00' => 'Tersedia',
+                                    '09:00 - 10:00' => 'Tersedia',
+                                    '10:00 - 11:00' => 'Tersedia',
+                                    '11:00 - 12:00' => 'Tersedia',
+                                    '12:00 - 13:00' => 'Istirahat',
+                                    '13:00 - 14:00' => 'Tersedia',
+                                    '14:00 - 15:00' => 'Tersedia',
+                                    '15:00 - 16:00' => 'Tersedia',
+                                ],
+                            ],
                         ];
                     @endphp
+
                     @foreach ($jadwal as $data)
                         <tr class="border-b border-gray-200 hover:bg-gray-50">
-                            <td class="px-4 py-3">{{ $data['kampus'] }}</td>
-                            <td class="px-4 py-3">{{ $data['jurusan'] }}</td>
-                            <td class="px-4 py-3">{{ $data['prodi'] }}</td>
                             <td class="px-4 py-3">{{ $data['dosen'] }}</td>
-                            <td class="px-4 py-3">{{ $data['hari'] }}</td>
-                            <td class="px-4 py-3">{{ $data['jam'] }}</td>
-                            <td class="px-4 py-3">{{ $data['status'] }}</td>
-                            <td class="px-4 py-3">{{ $data['ketersediaan'] }}</td>
+                            @foreach ($data['waktu'] as $jam => $ketersediaan)
+                                <td class="px-2 py-1 {{ $jam == '12:00 - 13:00' ? 'bg-gray-300' : '' }}">{{ $ketersediaan }}
+                                </td>
+                            @endforeach
                         </tr>
                     @endforeach
                 </tbody>
@@ -87,19 +108,24 @@
             <nav aria-label="Page navigation">
                 <ul class="flex items-center space-x-1">
                     <li>
-                        <a href="#" class="px-3 py-1 border border-gray-300 bg-white rounded-lg hover:bg-gray-100">Previous</a>
+                        <a href="#"
+                            class="px-3 py-1 border border-gray-300 bg-white rounded-lg hover:bg-gray-100">Previous</a>
                     </li>
                     <li>
-                        <a href="#" class="px-3 py-1 border border-gray-300 bg-white rounded-lg hover:bg-gray-100">1</a>
+                        <a href="#"
+                            class="px-3 py-1 border border-gray-300 bg-white rounded-lg hover:bg-gray-100">1</a>
                     </li>
                     <li>
-                        <a href="#" class="px-3 py-1 border border-gray-300 bg-white rounded-lg hover:bg-gray-100">2</a>
+                        <a href="#"
+                            class="px-3 py-1 border border-gray-300 bg-white rounded-lg hover:bg-gray-100">2</a>
                     </li>
                     <li>
-                        <a href="#" class="px-3 py-1 border border-gray-300 bg-white rounded-lg hover:bg-gray-100">3</a>
+                        <a href="#"
+                            class="px-3 py-1 border border-gray-300 bg-white rounded-lg hover:bg-gray-100">3</a>
                     </li>
                     <li>
-                        <a href="#" class="px-3 py-1 border border-gray-300 bg-white rounded-lg hover:bg-gray-100">Next</a>
+                        <a href="#"
+                            class="px-3 py-1 border border-gray-300 bg-white rounded-lg hover:bg-gray-100">Next</a>
                     </li>
                 </ul>
             </nav>

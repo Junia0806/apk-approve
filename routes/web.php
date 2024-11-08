@@ -1,23 +1,24 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+use App\Http\Controllers\AuthController;
 
 Route::get('/', function () {
-    return view('login');
-});
+    return view('login'); // Gantilah 'login' dengan nama view form login Anda
+})->name('login-form');
+
+Route::post('/dashboard', [AuthController::class, 'login'])->name('login');
+Route::get('/admin-beranda', function () {
+    return view('admin-beranda'); // Halaman untuk admin
+})->name('admin-beranda');
+Route::get('/beranda-dosen', function () {
+    return view('beranda-dosen'); // Halaman untuk dosen
+})->name('beranda-dosen');
 
 //GUEST (MAHASISWA)
+Route::get('/beranda', function () {
+    return view('guest.beranda');
+})->name('beranda');
 Route::get('/dashboard', function () {
     return view('guest.kehadiran-dosen');
 })->name('dashboard');
@@ -40,6 +41,10 @@ Route::get('/approval-dosen', function () {
 })->name('approval-dosen');
 
 //ADMIN
+
+Route::get('/admin-beranda', function () {
+    return view('admin.beranda');
+})->name('admin-beranda');
 Route::get('/admin-kampus', function () {
     return view('admin.kampus');
 })->name('admin-kampus');
@@ -55,6 +60,12 @@ Route::get('/admin-dosen', function () {
 Route::get('/admin-mataKuliah', function () {
     return view('admin.mataKuliah');
 })->name('admin-mataKuliah');
+Route::get('/admin-bimbingan', function () {
+    return view('admin.bimbingan');
+})->name('admin-bimbingan');
+Route::get('/admin-presensi', function () {
+    return view('admin.presensi');
+})->name('admin-presensi');
 Route::get('/admin-pengguna', function () {
     return view('admin.pengguna');
 })->name('admin-pengguna');

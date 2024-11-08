@@ -40,16 +40,24 @@
                             <th class="p-2 text-center">Kode Kampus</th>
                             <th class="p-2 text-center">Nama Kampus</th>
                             <th class="p-2 text-center">Alamat</th>
+                            <th class="p-2 text-center">Prodi</th>
                             <th class="p-2 text-center">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white text-center" id="dosenTableBody">
                         <?php for ($i = 1; $i <= 5; $i++): ?>
                         <tr class="border-b border-gray-200">
-                            <td class="p-2">POLIJEPSDKU1</td>
+                            <td class="p-2">PSDKU4</td>
                             <td class="p-2">KAMPUS 4 PSDKU SIDOARJO</td>
-                            <td class="p-2">Jl. Sekolahan Jalan Raya, Cangkring, Sidokare, Kec. Sidoarjo, Kabupaten
+                            <td class="p-2">Jl. Sekolahan Jalan Raya, Cangkring, Sidokare, Kec. Sidoarjo, Kab.
                                 Sidoarjo</td>
+                            <td class="p-2">
+                                <a href="{{ route('admin-prodi') }}"
+                                    class="inline-block px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    Detail
+                                </a>
+                            </td>
+
                             <td class="p-2">
                                 <button type="button" data-modal-target="#edit-item-modal-<?php echo $i; ?>"
                                     class="inline-flex items-center justify-center w-8 h-8 text-gray-800 bg-gray-200 border border-gray-300 rounded-sm shadow-sm hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500">
@@ -103,7 +111,8 @@
                                                     placeholder="Masukkan Nama Kampus" required>
                                             </div>
                                             <div class="text-left mt-4">
-                                                <label for="jabatan" class="block text-sm font-medium text-gray-900">Alamat
+                                                <label for="jabatan"
+                                                    class="block text-sm font-medium text-gray-900">Alamat
                                                     Kampus</label>
                                                 <input type="text" name="jabatan" id="jabatan"
                                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"

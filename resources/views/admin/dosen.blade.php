@@ -48,7 +48,7 @@
                     <tr class="border-b border-gray-200">
                         <td class="p-2"><?php printf('%03d', $i); ?></td>
                         <td class="p-2">19850101201001200<?php echo sprintf('%02d', $i); ?></td>
-                        <td class="p-2">Junia Vitasari, S.Tr.Kom., M.T.</td>
+                        <td class="p-2">Rifqi Aji Widarso, S.T. M.T.</td>
                         <td class="p-2">08970965273</td>
                         <td class="p-2">
                             <button type="button" data-modal-target="#edit-item-modal-<?php echo $i; ?>"

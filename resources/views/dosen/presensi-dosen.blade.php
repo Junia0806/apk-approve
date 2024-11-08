@@ -8,7 +8,7 @@
             </div>
 
         </div>
-        <div class="overflow-x-auto">
+        <div class="overflow-x-auto shadow rounded-lg border border-gray-200 bg-white bg-nota" id="pdfContent">
             <!-- Tabel Dosen -->
             <div class="overflow-x-auto">
                 <table class="w-full border-separate border-spacing-0 text-sm text-black">
@@ -23,20 +23,20 @@
                     <tbody class="bg-white text-center" id="dosenTableBody">
                         <?php for ($i = 1; $i <= 1; $i++): ?>
                         <tr class="border-b border-gray-200">
-                            <td class="p-2">03 Oktober 2024</td>
-                            <td class="p-2">Rabu</td>
+                            <td class="p-2">11 November 2024</td>
+                            <td class="p-2">Senin</td>
                             <td class="p-2">-</td>
                             <td class="p-2">
                                 <button type="button" data-modal-target="#edit-item-modal-<?php echo $i; ?>"
-                                    class="inline-flex items-center justify-center w-14 rounded-md text-white bg-green-500 border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-500">
+                                    class="inline-flex items-center justify-center px-4 py-2 w-auto rounded-md text-white bg-green-500 border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-500">
                                     Tersedia
                                 </button>
 
                             </td>
                         </tr>
                         <tr class="border-b border-gray-200">
-                            <td class="p-2">02 Oktober 2024</td>
-                            <td class="p-2">Selasa</td>
+                            <td class="p-2">08 November 2024</td>
+                            <td class="p-2">Jumat</td>
                             <td class="p-2">Hadir</td>
                             <td class="p-2 text-gray-600">
                                 Tidak Tersedia
@@ -44,12 +44,35 @@
                             </td>
                         </tr>
                         <tr class="border-b border-gray-200">
-                            <td class="p-2">01 Oktober 2024</td>
-                            <td class="p-2">Senin</td>
+                            <td class="p-2">07 November 2024</td>
+                            <td class="p-2">Kamis</td>
                             <td class="p-2">Tidak Hadir</td>
                             <td class="p-2 text-gray-600">
                                 Tidak Tersedia
-
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-200">
+                            <td class="p-2">06 November 2024</td>
+                            <td class="p-2">Rabu</td>
+                            <td class="p-2">Hadir</td>
+                            <td class="p-2 text-gray-600">
+                                Tidak Tersedia
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-200">
+                            <td class="p-2">05 November 2024</td>
+                            <td class="p-2">Selasa</td>
+                            <td class="p-2">Hadir</td>
+                            <td class="p-2 text-gray-600">
+                                Tidak Tersedia
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-200">
+                            <td class="p-2">04 November 2024</td>
+                            <td class="p-2">Senin</td>
+                            <td class="p-2">Hadir</td>
+                            <td class="p-2 text-gray-600">
+                                Tidak Tersedia
                             </td>
                         </tr>
                         <!-- Modal Edit Dosen -->
@@ -143,9 +166,6 @@
             </div>
         </div>
     </div>
-
-
-
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>

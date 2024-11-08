@@ -1,11 +1,25 @@
-@extends('dosen.default')
+@extends('admin.default')
 
 @section('content')
     <div class="container mx-auto p-6 mt-10 min-h-screen">
+        <div class="flex flex-col sm:flex-row justify-between items-center mb-6 space-y-4 sm:space-y-0">
+            <div class="flex items-center space-x-4 w-full sm:w-auto">
+                <label for="tahun_ajaran" class="text-base font-semibold text-gray-800">
+                    Tampilkan Berdasarkan Dosen
+                </label>
+                <select id="tahun_ajaran" name="tahun_ajaran"
+                    class="block w-full sm:w-64 py-2 px-3 border border-gray-300 bg-white rounded-md shadow focus:ring-blue-600 focus:border-blue-600 sm:text-base text-gray-700">
+                    <option>Rifqi Aji Widarso, S.T. M.T.</option>
+                    <option>Adi Sucipto, S.ST., M.Tr.T.</option>
+                    <option>Rani Purbaningtyas, S.Kom., MT.</option>
+                </select>
+            </div>
+        </div>
         <div class="overflow-x-auto shadow rounded-lg border border-gray-200 bg-white bg-nota" id="pdfContent">
             <div class="flex items-center justify-between p-2 border-b">
                 <div class="flex-1 text-center">
                     <h1 class="text-3xl font-bold text-gray-800">Approval Bimbingan</h1>
+                    <p class="text-lg">Rifqi Aji Widarso, S.T. M.T.</p>
                 </div>
             </div>
             <div class="overflow-x-auto">
@@ -121,7 +135,8 @@
                                                     <p>Ahmad Syarif</p>
                                                 </div>
                                                 <div class="text-left mt-4">
-                                                    <label class="block text-sm font-medium text-gray-900">Keperluan</label>
+                                                    <label
+                                                        class="block text-sm font-medium text-gray-900">Keperluan</label>
                                                     <p>Penyusunan Bab II</p>
                                                 </div>
                                                 <div class="text-left mt-4">

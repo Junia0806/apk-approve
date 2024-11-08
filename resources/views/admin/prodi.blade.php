@@ -3,7 +3,7 @@
     <div class="container mx-auto p-6 mt-10 min-h-screen">
         <div class="flex items-center justify-between p-2 border-b">
             <div class="flex-1 text-center">
-                <h1 class="text-3xl font-bold text-gray-800">Program Studi</h1>
+                <h1 class="text-3xl font-bold text-gray-800">Program Studi Kampus 4 PSDKU Sidoarjo</h1>
             </div>
             <button data-modal-target="crud-modal" data-modal-toggle="crud-modal"
                 class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 text-sm"
@@ -47,7 +47,7 @@
                     <tbody class="bg-white text-center" id="dosenTableBody">
                         <?php for ($i = 1; $i <= 5; $i++): ?>
                         <tr class="border-b border-gray-200">
-                            <td class="p-2">TIPOLIJE</td>
+                            <td class="p-2">TIFSDA</td>
                             <td class="p-2">Teknik Informarika</td>
                             <td class="p-2">Teknologi Informasi</td>
                             <td class="p-2">Kampus 4 PSDKU Kabupaten Sidoarjo</td>
@@ -103,29 +103,18 @@
                                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
                                                     placeholder="Masukkan Nama Prodi" required>
                                             </div>
-                                            <div class="text-left mt-4">
-                                                <label for="kampus"
-                                                    class="block text-sm font-medium text-gray-900">Jurusan</label>
-                                                <select name="kampus" id="kampus"
-                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
-                                                    required>
-                                                    <option value="" disabled selected>Pilih Jurusan</option>
-                                                    <option value="kampus1">Jurusan 1</option>
-                                                    <option value="Jurusan2">Jurusan 2</option>
-                                                    <option value="Jurusan3">Jurusan 3</option>
-                                                </select>
+                                            <div class="text-left mt-4"> 
+                                                <label for="jurusan" class="block text-sm font-medium text-gray-900">Jurusan</label>
+                                                <input type="text" id="jurusan" name="jurusan" value="Teknologi Informasi"
+                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 mt-1"
+                                                    readonly>
                                             </div>
+                                            
                                             <div class="text-left mt-4">
-                                                <label for="kampus"
-                                                    class="block text-sm font-medium text-gray-900">Kampus</label>
-                                                <select name="kampus" id="kampus"
-                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
-                                                    required>
-                                                    <option value="" disabled selected>Pilih Kampus</option>
-                                                    <option value="kampus1">Kampus 1</option>
-                                                    <option value="kampus2">Kampus 2</option>
-                                                    <option value="kampus3">Kampus 3</option>
-                                                </select>
+                                                <label for="kampus" class="block text-sm font-medium text-gray-900">Kampus</label>
+                                                <input type="text" id="kampus" name="kampus" value="Kampus 4 PSDKU Kabupaten Sidoarjo"
+                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 mt-1"
+                                                    readonly>
                                             </div>
                                             <div class="flex justify-end">
                                                 <button type="submit"
@@ -178,27 +167,20 @@
                                 placeholder="Masukkan Nama Prodi" required>
                         </div>
                         <div class="text-left mt-4">
-                            <label for="kampus" class="block text-sm font-medium text-gray-900">Jurusan</label>
-                            <select name="kampus" id="kampus"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
-                                required>
-                                <option value="" disabled selected>Pilih Jurusan</option>
-                                <option value="kampus1">Jurusan 1</option>
-                                <option value="Jurusan2">Jurusan 2</option>
-                                <option value="Jurusan3">Jurusan 3</option>
-                            </select>
+                            <label for="jurusan" class="block text-sm font-medium text-gray-900">Jurusan</label>
+                            <input type="text" id="jurusan" name="jurusan" value="Teknologi Informasi"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 mt-1"
+                                readonly>
                         </div>
+
                         <div class="text-left mt-4">
                             <label for="kampus" class="block text-sm font-medium text-gray-900">Kampus</label>
-                            <select name="kampus" id="kampus"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
-                                required>
-                                <option value="" disabled selected>Pilih Kampus</option>
-                                <option value="kampus1">Kampus 1</option>
-                                <option value="kampus2">Kampus 2</option>
-                                <option value="kampus3">Kampus 3</option>
-                            </select>
+                            <input type="text" id="kampus" name="kampus"
+                                value="Kampus 4 PSDKU Kabupaten Sidoarjo"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 mt-1"
+                                readonly>
                         </div>
+
                         <div class="flex justify-end">
                             <button type="submit"
                                 class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 font-medium text-sm my-2">

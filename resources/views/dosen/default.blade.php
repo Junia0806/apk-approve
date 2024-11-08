@@ -28,8 +28,7 @@
                     <a href="https://flowbite.com" class="flex ms-2 md:me-24">
                         <img src="{{ asset('asset/logo.png') }}" class="h-8 me-3" alt="Logo" />
                         <span
-                            class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Aprroval
-                            POLIJE</span>
+                            class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Dosen Politeknik Negeri Jember</span>
                     </a>
                 </div>
                 <div class="flex items-center">
@@ -48,16 +47,17 @@
                             id="dropdown-user">
                             <div class="px-4 py-3" role="none">
                                 <p class="text-sm text-gray-900 dark:text-white" role="none">
-                                  Rani Purbaningtyas, S.Tr.Kom., M.T.
+                                    Rifqi Aji Widarso, S.T. M.T.
                                 </p>
                             </div>
                             <ul class="py-1" role="none">
                                 <li>
-                                    <a href="#"
+                                    <a href="#" id="logout-link"
                                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                                         role="menuitem">Logout <i class="fa-solid fa-arrow-right-from-bracket"></i></a>
                                 </li>
                             </ul>
+
                         </div>
                     </div>
                 </div>
@@ -73,21 +73,24 @@
                 <li>
                     <a href="{{ route('beranda-dosen') }}"
                         class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <i class="fa-solid fa-house w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+                        <i
+                            class="fa-solid fa-house w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
                         <span class="ms-3">Dashboard</span>
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('presensi-dosen') }}"
                         class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <i class="fa-solid fa-folder w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+                        <i
+                            class="fa-solid fa-folder w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
                         <span class="ms-3">Presensi</span>
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('approval-dosen') }}"
                         class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <i class="fa-solid fa-file-lines w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+                        <i
+                            class="fa-solid fa-file-lines w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
                         <span class="ms-3">Bimbingan</span>
                     </a>
                 </li>
@@ -101,7 +104,31 @@
         </main>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    <script>
+        document.getElementById('logout-link').addEventListener('click', function(e) {
+            e.preventDefault(); // Prevent default link behavior
+            Swal.fire({
+                title: "Apakah Anda yakin?",
+                text: "Anda tidak akan bisa membatalkan ini!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Ya, keluar"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "Keluar!",
+                        text: "Anda telah keluar.",
+                        icon: "success"
+                    }).then(() => {
+                        // Redirect to login page or home
+                        window.location.href = '/'; // Adjust the URL as needed
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

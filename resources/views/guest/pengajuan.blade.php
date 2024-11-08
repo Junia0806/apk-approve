@@ -19,39 +19,29 @@
             <div class="grid grid-cols-1 md:grid-cols-2">
                 <div class="mb-4 mx-4">
                     <label for="kampus" class="block text-sm font-bold text-gray-700 mb-2">Kampus</label>
-                    <input type="text" id="kampus" name="kampus" placeholder="Masukkan Kampus" required
+                    <input type="text" id="kampus" name="kampus" value="Kampus 4 PSDKU Kabupaten Sidoarjo" readonly
                         class="w-full px-4 py-3 border rounded-md text-gray-800 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                 </div>
                 <div class="mb-4 mx-4">
                     <label for="jurusan" class="block text-sm font-bold text-gray-700 mb-2">Jurusan</label>
-                    <select id="jurusan" name="jurusan" required
+                    <input type="text" id="kampus" name="kampus" value="Teknologi Informasi" readonly
                         class="w-full px-4 py-3 border rounded-md text-gray-800 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                        <option value="">Pilih Jurusan</option>
-                        <option value="jurusan1">Jurusan 1</option>
-                        <option value="jurusan2">Jurusan 2</option>
-                        <option value="jurusan3">Jurusan 3</option>
-                    </select>
                 </div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2">
                 <div class="mb-4 mx-4">
                     <label for="prodi" class="block text-sm font-bold text-gray-700 mb-2">Program Studi (Prodi)</label>
-                    <select id="prodi" name="prodi" required
+                    <input type="text" id="kampus" name="kampus" value="Teknik Informatika" readonly
                         class="w-full px-4 py-3 border rounded-md text-gray-800 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                        <option value="">Pilih Program Studi</option>
-                        <option value="prodi1">Prodi 1</option>
-                        <option value="prodi2">Prodi 2</option>
-                        <option value="prodi3">Prodi 3</option>
-                    </select>
                 </div>
                 <div class="mb-4 mx-4">
                     <label for="dosen" class="block text-sm font-bold text-gray-700 mb-2">Dosen Pembimbing</label>
                     <select id="dosen" name="dosen" required
                         class="w-full px-4 py-3 border rounded-md text-gray-800 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                         <option value="">Pilih Dosen</option>
-                        <option value="dosen1">Dosen 1</option>
-                        <option value="dosen2">Dosen 2</option>
-                        <option value="dosen3">Dosen 3</option>
+                        <option>Rifqi Aji Widarso, S.T. M.T.</option>
+                        <option>Adi Sucipto, S.ST., M.Tr.T.</option>
+                        <option>Rani Purbaningtyas, S.Kom., MT.</option>
                     </select>
                 </div>
             </div>
@@ -62,15 +52,21 @@
                         class="w-full px-4 py-3 border rounded-md text-gray-800 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                 </div>
                 <div class="mb-4 mx-4">
-                    <label for="slot" class="block text-sm font-bold text-gray-700 mb-2">Pilih Slot</label>
+                    <label for="slot" class="block text-sm font-bold text-gray-700 mb-2">Pilih Sesi Bimbingan</label>
                     <select id="slot" name="slot" required
                         class="w-full px-4 py-3 border rounded-md text-gray-800 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                        <option value="">Pilih Slot</option>
-                        <option value="slot1">Slot 1</option>
-                        <option value="slot2">Slot 2</option>
-                        <option value="slot3">Slot 3</option>
+                        <option value="">Pilih Sesi</option>
+                        <option value="slot1">Sesi 1 - 08:00</option>
+                        <option value="slot2">Sesi 2 - 09:00</option>
+                        <option value="slot3" disabled>Sesi 3 - 10:00 (Tidak tersedia)</option>
+                        <option value="slot4">Sesi 4 - 11:00</option>
+                        <option value="slot5" disabled>Sesi 5 - 12:00 (Tidak tersedia)</option>
+                        <option value="slot6">Sesi 6 - 13:00</option>
+                        <option value="slot7" disabled>Sesi 7 - 14:00 (Tidak tersedia)</option>
+                        <option value="slot8">Sesi 8 - 15:00</option>
                     </select>
                 </div>
+                
             </div>
             <div class="col-span-2 mb-4 mx-4">
                 <label for="keperluan" class="block text-sm font-bold text-gray-700 mb-2">Keperluan Bimbingan</label>
@@ -78,13 +74,31 @@
                     class="w-full px-4 py-3 border rounded-md text-gray-800 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
             </div>
 
-            <!-- Submit Button -->
             <div class="col-span-2 text-right my-2 mx-auto">
-                <button type="submit"
+                <button type="button" id="submitButton"
                     class="w-full md:w-auto px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none font-bold">
                     Ajukan Jadwal
                 </button>
             </div>
         </div>
     </div>
+    <script>
+        document.getElementById("submitButton").addEventListener("click", function(event) {
+            event.preventDefault(); // Mencegah submit form langsung
+    
+            Swal.fire({
+                title: 'Konfirmasi Pengajuan',
+                text: "Pengajuan bimbingan tidak bisa dibatalkan. Periksa kembali.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, ajukan!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/bimbingan';
+                }
+            });
+        });
+    </script>
 @endsection

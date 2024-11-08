@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Approval APK</title>
+    <title>Pengajuan Bimbingan</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -28,8 +28,7 @@
                     <a href="https://flowbite.com" class="flex ms-2 md:me-24">
                         <img src="{{ asset('asset/logo.png') }}" class="h-8 me-3" alt="Logo" />
                         <span
-                            class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Approval
-                            POLIJE</span>
+                            class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Mahasiswa</span>
                     </a>
                 </div>
             </div>
@@ -46,7 +45,7 @@
                         class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <i
                             class="fa-solid fa-house w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
-                        <span class="ms-3">Kehadiran Dosen</span>
+                        <span class="ms-3">Ketersediaan Sesi</span>
                     </a>
                 </li>
                 <li>
@@ -60,7 +59,8 @@
                 <li>
                     <a href="{{ route('pengajuan') }}"
                         class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <i class="fa-solid fa-file w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+                        <i
+                            class="fa-solid fa-file w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
                         <span class="ms-3">Pengajuan Bimbingan</span>
                     </a>
                 </li>
