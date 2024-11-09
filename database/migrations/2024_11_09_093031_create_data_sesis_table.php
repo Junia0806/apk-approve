@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('data_sesis', function (Blueprint $table) {
-            $table->id();
+            $table->id('id_sesi');
+            $table->string('jam_awal');
+            $table->string('jam_akhir');
             $table->timestamps();
         });
     }

@@ -12,7 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('data_jadwals', function (Blueprint $table) {
-            $table->id();
+            $table->id('id_jadwal');
+            $table->bigInteger('id_matkul');
+            $table->bigInteger('id_sesi');
+            $table->bigInteger('id_dosen');
+            $table->string('hari');
             $table->timestamps();
         });
     }

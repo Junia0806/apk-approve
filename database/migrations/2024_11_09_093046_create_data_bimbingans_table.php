@@ -12,7 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('data_bimbingans', function (Blueprint $table) {
-            $table->id();
+            $table->id('id_bimbingan');
+            $table->bigInteger('id_prodi');
+            $table->bigInteger('id_dosen');
+            $table->string('nim');
+            $table->string('nama');
+            $table->string('dosen');
+            $table->date('tgl_bimbigan');
+            $table->string('hari');
+            $table->text('keperluan');
             $table->timestamps();
         });
     }
