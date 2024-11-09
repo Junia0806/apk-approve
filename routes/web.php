@@ -2,7 +2,55 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+// GUEST
+use App\Http\Controllers\CekSesi;
+use App\Http\Controllers\JadwalGuest;
+use App\Http\Controllers\PengajuanGuest;
 
+// DOSEN
+use App\Http\Controllers\Dosen\DashboardDosen;
+use App\Http\Controllers\Dosen\PresensiDosen;
+use App\Http\Controllers\Dosen\BimbinganDosen;
+
+// ADMIN
+use App\Http\Controllers\Admin\DashboardAdmin;
+use App\Http\Controllers\Admin\KampusAdmin;
+use App\Http\Controllers\Admin\DosenAdmin;
+use App\Http\Controllers\Admin\MatkulAdmin;
+use App\Http\Controllers\Admin\BimbinganAdmin;
+use App\Http\Controllers\Admin\JadwalAdmin;
+use App\Http\Controllers\Admin\PresensiAdmin;
+use App\Http\Controllers\Admin\UserAdmin;
+use App\Http\Controllers\Admin\SesiAdmin;
+
+
+// KONFIGURASI INTEGRASI TERLINDUNGI MIDDLEWARE (JANGAN DIPAKE DULU YA!)
+// Route::prefix('/')->group(function () {
+//     Route::resource('cek-sesi', CekSesi::class);
+//     Route::resource('jadwal', JadwalGuest::class);
+//     Route::resource('pengajuan', PengajuanGuest::class);
+// });
+
+// Route::prefix('dosen')->middleware('auth')->group(function () {
+//     Route::resource('dashboard', DashboardDosen::class);
+//     Route::resource('presensi', PresensiDosen::class);
+//     Route::resource('bimbingan', BimbinganDosen::class);
+// });
+
+// Route::prefix('admin')->middleware('auth')->group(function () {
+//     Route::resource('dashboard', DashboardAdmin::class);
+//     Route::resource('kampus', KampusAdmin::class);
+//     Route::resource('dosen', DosenAdmin::class);
+//     Route::resource('matkul', MatkulAdmin::class);
+//     Route::resource('bimbingan', BimbinganAdmin::class);
+//     Route::resource('jadwal', JadwalAdmin::class);
+//     Route::resource('presensi', PresensiAdmin::class);
+//     Route::resource('user', UserAdmin::class);
+//     Route::resource('sesi', SesiAdmin::class);
+// });
+
+
+// KONFIGURASI FRONT-END
 Route::get('/', function () {
     return view('login'); // Gantilah 'login' dengan nama view form login Anda
 })->name('login-form');
