@@ -196,6 +196,7 @@
                     bimbingans.forEach(bimbingan => {
                         const row = document.createElement('tr');
                         let statusText = '';
+                        let editButton = '';
 
                         if (bimbingan.status == 1) {
                             statusText = 'Disetujui';
@@ -205,6 +206,17 @@
                             statusText = '-';
                         }
 
+                        // Validasi tombol edit, hanya tampil jika status null atau kosong
+                        if (bimbingan.status === null || bimbingan.status === undefined || bimbingan.status ===
+                            '') {
+                            editButton = `
+                                <button onclick="openEditModal(${bimbingan.id_bimbingan}, '${bimbingan.tanggal}', '${bimbingan.hari}', '${bimbingan.jam_awal} - ${bimbingan.jam_akhir}', '${bimbingan.nama}', '${bimbingan.keperluan}', '${bimbingan.status}')"
+                                        class="bg-blue-500 text-white px-4 py-2 rounded">Edit</button>
+                            `;
+                        } else {
+                            editButton = 'Tidak Tersedia'; // Menampilkan tanda "-" jika status sudah ada
+                        }
+
                         row.innerHTML = `
                             <td>${bimbingan.tanggal}</td>
                             <td>${bimbingan.hari}</td>
@@ -212,8 +224,7 @@
                             <td>${bimbingan.nama}</td>
                             <td>${bimbingan.keperluan}</td>
                             <td><span id="orderStatus">${statusText}</span></td>
-                            <button onclick="openEditModal(${bimbingan.id_bimbingan}, '${bimbingan.tanggal}', '${bimbingan.hari}', '${bimbingan.jam_awal} - ${bimbingan.jam_akhir}', '${bimbingan.nama}', '${bimbingan.keperluan}', '${bimbingan.status}')"
-                                    class="bg-blue-500 text-white px-4 py-2 rounded">Edit</button>
+                            <td>${editButton}</td>
                         </td>
                         `;
                         tableBody.appendChild(row);
