@@ -4,48 +4,110 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\DataDosen; // Asumsi menggunakan model DataDosen
 
 class DosenAdmin extends Controller
 {
     // Menampilkan daftar data
     public function index()
     {
-        // Logika untuk mengambil dan menampilkan data
+        $dosen = DataDosen::all(); // Mengambil semua data dosen
+        return response()->json($dosen);
     }
 
     // Menampilkan form untuk membuat data baru
     public function create()
     {
-        // Logika untuk menampilkan form pembuatan data
+        return response()->json(['message' => 'Form untuk membuat data dosen baru'], 200);
     }
 
     // Menyimpan data baru
     public function store(Request $request)
     {
-        // Logika untuk menyimpan data ke database
+        $request->validate([
+            'kd_dosen' => 'required|string',
+            'NIP' => 'required|string',
+            'nama_dosen' => 'required|string',
+            'no_hp' => 'required|string',
+        ]);
+
+        $dosen = DataDosen::create([
+            'kd_dosen' => $request->kd_dosen,
+            'NIP' => $request->NIP,
+            'nama_dosen' => $request->nama_dosen,
+            'no_hp' => $request->no_hp,
+        ]);
+
+        return response()->json([
+            'message' => 'Dosen berhasil ditambahkan.',
+            'data' => $dosen
+        ], 201);
     }
 
     // Menampilkan data tertentu berdasarkan ID
     public function show($id)
     {
-        // Logika untuk menampilkan data tertentu
+        $dosen = DataDosen::find($id);
+
+        if (!$dosen) {
+            return response()->json(['message' => 'Dosen tidak ditemukan'], 404);
+        }
+
+        return response()->json($dosen);
     }
 
     // Menampilkan form untuk mengedit data tertentu
     public function edit($id)
     {
-        // Logika untuk menampilkan form edit
+        $dosen = DataDosen::find($id);
+
+        if (!$dosen) {
+            return response()->json(['message' => 'Dosen tidak ditemukan'], 404);
+        }
+
+        return response()->json(['message' => 'Form untuk mengedit dosen', 'data' => $dosen]);
     }
 
     // Memperbarui data tertentu berdasarkan ID
     public function update(Request $request, $id)
     {
-        // Logika untuk memperbarui data
+        $request->validate([
+            'kd_dosen' => 'required|string',
+            'NIP' => 'required|string',
+            'nama_dosen' => 'required|string',
+            'no_hp' => 'required|string',
+        ]);
+
+        $dosen = DataDosen::find($id);
+
+        if (!$dosen) {
+            return response()->json(['message' => 'Dosen tidak ditemukan'], 404);
+        }
+
+        $dosen->update([
+            'kd_dosen' => $request->kd_dosen,
+            'NIP' => $request->NIP,
+            'nama_dosen' => $request->nama_dosen,
+            'no_hp' => $request->no_hp,
+        ]);
+
+        return response()->json([
+            'message' => 'Dosen berhasil diperbarui.',
+            'data' => $dosen
+        ], 200);
     }
 
     // Menghapus data tertentu berdasarkan ID
     public function destroy($id)
     {
-        // Logika untuk menghapus data
+        $dosen = DataDosen::find($id);
+
+        if (!$dosen) {
+            return response()->json(['message' => 'Dosen tidak ditemukan'], 404);
+        }
+
+        $dosen->delete();
+
+        return response()->json(['message' => 'Dosen berhasil dihapus.'], 200);
     }
 }

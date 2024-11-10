@@ -29,4 +29,9 @@ class DataSesi extends Model
 
     // Mengatur timestamps, jika true maka otomatis mengisi created_at dan updated_at
     public $timestamps = true;
+
+    public function bimbingans()
+    {
+        return $this->hasMany(DataBimbingan::class, 'id_sesi');
+    }
 }

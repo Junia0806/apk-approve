@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('id_bimbingan');
             $table->bigInteger('id_prodi');
             $table->bigInteger('id_dosen');
+            $table->bigInteger('id_sesi');
             $table->string('nim');
             $table->string('nama');
             $table->string('dosen');

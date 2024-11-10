@@ -4,48 +4,110 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\DataMatkul; // Asumsi menggunakan model DataMatkul
 
 class MatkulAdmin extends Controller
 {
     // Menampilkan daftar data
     public function index()
     {
-        // Logika untuk mengambil dan menampilkan data
+        $matkuls = DataMatkul::all(); // Mengambil semua data matkul
+        return response()->json($matkuls);
     }
 
     // Menampilkan form untuk membuat data baru
     public function create()
     {
-        // Logika untuk menampilkan form pembuatan data
+        return response()->json(['message' => 'Form untuk membuat data matkul baru'], 200);
     }
 
     // Menyimpan data baru
     public function store(Request $request)
     {
-        // Logika untuk menyimpan data ke database
+        $request->validate([
+            'kd_matkul' => 'required|string',
+            'matkul' => 'required|string',
+            'sks' => 'required|integer',
+            'semester' => 'required|integer',
+        ]);
+
+        $matkul = DataMatkul::create([
+            'kd_matkul' => $request->kd_matkul,
+            'matkul' => $request->matkul,
+            'sks' => $request->sks,
+            'semester' => $request->semester,
+        ]);
+
+        return response()->json([
+            'message' => 'Matkul berhasil ditambahkan.',
+            'data' => $matkul
+        ], 201);
     }
 
     // Menampilkan data tertentu berdasarkan ID
     public function show($id)
     {
-        // Logika untuk menampilkan data tertentu
+        $matkul = DataMatkul::find($id);
+
+        if (!$matkul) {
+            return response()->json(['message' => 'Matkul tidak ditemukan'], 404);
+        }
+
+        return response()->json($matkul);
     }
 
     // Menampilkan form untuk mengedit data tertentu
     public function edit($id)
     {
-        // Logika untuk menampilkan form edit
+        $matkul = DataMatkul::find($id);
+
+        if (!$matkul) {
+            return response()->json(['message' => 'Matkul tidak ditemukan'], 404);
+        }
+
+        return response()->json(['message' => 'Form untuk mengedit matkul', 'data' => $matkul]);
     }
 
     // Memperbarui data tertentu berdasarkan ID
     public function update(Request $request, $id)
     {
-        // Logika untuk memperbarui data
+        $request->validate([
+            'kd_matkul' => 'required|string',
+            'matkul' => 'required|string',
+            'sks' => 'required|integer',
+            'semester' => 'required|integer',
+        ]);
+
+        $matkul = DataMatkul::find($id);
+
+        if (!$matkul) {
+            return response()->json(['message' => 'Matkul tidak ditemukan'], 404);
+        }
+
+        $matkul->update([
+            'kd_matkul' => $request->kd_matkul,
+            'matkul' => $request->matkul,
+            'sks' => $request->sks,
+            'semester' => $request->semester,
+        ]);
+
+        return response()->json([
+            'message' => 'Matkul berhasil diperbarui.',
+            'data' => $matkul
+        ], 200);
     }
 
     // Menghapus data tertentu berdasarkan ID
     public function destroy($id)
     {
-        // Logika untuk menghapus data
+        $matkul = DataMatkul::find($id);
+
+        if (!$matkul) {
+            return response()->json(['message' => 'Matkul tidak ditemukan'], 404);
+        }
+
+        $matkul->delete();
+
+        return response()->json(['message' => 'Matkul berhasil dihapus.'], 200);
     }
 }

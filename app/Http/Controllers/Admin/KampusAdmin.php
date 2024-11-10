@@ -4,48 +4,106 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\DataKampus;
 
 class KampusAdmin extends Controller
 {
     // Menampilkan daftar data
     public function index()
     {
-        // Logika untuk mengambil dan menampilkan data
+        $kampus = DataKampus::all();
+        return response()->json($kampus);
     }
 
     // Menampilkan form untuk membuat data baru
     public function create()
     {
-        // Logika untuk menampilkan form pembuatan data
+        return response()->json(['message' => 'Form untuk membuat data kampus baru'], 200);
     }
 
     // Menyimpan data baru
     public function store(Request $request)
     {
-        // Logika untuk menyimpan data ke database
+        $request->validate([
+            'kd_kampus' => 'required|string',
+            'nama_kampus' => 'required|string',
+            'alamat' => 'required|string',
+        ]);
+
+        $kampus = DataKampus::create([
+            'kd_kampus' => $request->kd_kampus,
+            'nama_kampus' => $request->nama_kampus,
+            'alamat' => $request->alamat,
+        ]);
+
+        return response()->json([
+            'message' => 'Kampus berhasil ditambahkan.',
+            'data' => $kampus
+        ], 201);
     }
 
     // Menampilkan data tertentu berdasarkan ID
     public function show($id)
     {
-        // Logika untuk menampilkan data tertentu
+        $kampus = DataKampus::find($id);
+
+        if (!$kampus) {
+            return response()->json(['message' => 'Data kampus tidak ditemukan'], 404);
+        }
+
+        return response()->json($kampus);
     }
 
     // Menampilkan form untuk mengedit data tertentu
     public function edit($id)
     {
-        // Logika untuk menampilkan form edit
+        $kampus = DataKampus::find($id);
+
+        if (!$kampus) {
+            return response()->json(['message' => 'Data kampus tidak ditemukan'], 404);
+        }
+
+        return response()->json(['message' => 'Form untuk mengedit kampus', 'data' => $kampus]);
     }
 
     // Memperbarui data tertentu berdasarkan ID
     public function update(Request $request, $id)
     {
-        // Logika untuk memperbarui data
+        $request->validate([
+            'kd_kampus' => 'required|string',
+            'nama_kampus' => 'required|string',
+            'alamat' => 'required|string',
+        ]);
+
+        $kampus = DataKampus::find($id);
+
+        if (!$kampus) {
+            return response()->json(['message' => 'Data kampus tidak ditemukan'], 404);
+        }
+
+        $kampus->update([
+            'kd_kampus' => $request->kd_kampus,
+            'nama_kampus' => $request->nama_kampus,
+            'alamat' => $request->alamat,
+        ]);
+
+        return response()->json([
+            'message' => 'Kampus berhasil diperbarui.',
+            'data' => $kampus
+        ], 200);
     }
 
     // Menghapus data tertentu berdasarkan ID
     public function destroy($id)
     {
-        // Logika untuk menghapus data
+        $kampus = DataKampus::find($id);
+
+        if (!$kampus) {
+            return response()->json(['message' => 'Data kampus tidak ditemukan'], 404);
+        }
+
+        $kampus->delete();
+
+        return response()->json(['message' => 'Kampus berhasil dihapus.'], 200);
     }
 }

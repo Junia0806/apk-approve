@@ -21,10 +21,13 @@ class DataBimbingan extends Model
     // Tipe primary key
     protected $keyType = 'int';
 
+    protected $dates = ['tgl_bimbigan']; // Menambahkan kolom tgl_bimbigan ke dalam array dates
+
     // Field yang dapat diisi secara mass-assignment
     protected $fillable = [
         'id_prodi',
         'id_dosen',
+        'id_sesi',
         'nim',
         'nama',
         'dosen',
@@ -46,5 +49,9 @@ class DataBimbingan extends Model
     public function dosen()
     {
         return $this->belongsTo(DataDosen::class, 'id_dosen');
+    }
+    public function sesi()
+    {
+        return $this->belongsTo(DataSesi::class, 'id_sesi');
     }
 }
