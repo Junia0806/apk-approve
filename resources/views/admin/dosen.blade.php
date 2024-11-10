@@ -44,92 +44,96 @@
                     </tr>
                 </thead>
                 <tbody class="bg-white text-center" id="dosenTableBody">
-                    <?php for ($i = 1; $i <= 5; $i++): ?>
-                    <tr class="border-b border-gray-200">
-                        <td class="p-2"><?php printf('%03d', $i); ?></td>
-                        <td class="p-2">19850101201001200<?php echo sprintf('%02d', $i); ?></td>
-                        <td class="p-2">Rifqi Aji Widarso, S.T. M.T.</td>
-                        <td class="p-2">08970965273</td>
-                        <td class="p-2">
-                            <button type="button" data-modal-target="#edit-item-modal-<?php echo $i; ?>"
-                                class="inline-flex items-center justify-center w-8 h-8 text-gray-800 bg-gray-200 border border-gray-300 rounded-sm shadow-sm hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500">
-                                <i class="fa-regular fa-pen-to-square text-lg"></i>
-                            </button>
-                            <form id="delete-form-<?php echo $i; ?>" action="/" method="POST"
-                                class="inline-block">
-                                @csrf
-                                @method('DELETE')
-                                <button type="button"
-                                    class="inline-flex items-center justify-center w-8 h-8 text-white bg-red-700 border border-red-600 rounded shadow-sm hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 ml-1"
-                                    onclick="confirmDelete('<?php printf('%03d', $i); ?>')">
-                                    <i class="fa-regular fa-trash-can text-base"></i>
+                    @foreach ($dosen as $index => $item)
+                        <tr class="border-b border-gray-200">
+                            <td class="p-2">{{ $item->kd_dosen }}</td>
+                            <td class="p-2">{{ $item->NIP }}</td>
+                            <td class="p-2">{{ $item->nama_dosen }}</td>
+                            <td class="p-2">{{ $item->no_hp }}</td>
+                            <td class="p-2">
+                                <button type="button" data-modal-target="#edit-item-modal-{{ $item->id_dosen }}"
+                                    class="inline-flex items-center justify-center w-8 h-8 text-gray-800 bg-gray-200 border border-gray-300 rounded-sm shadow-sm hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500">
+                                    <i class="fa-regular fa-pen-to-square text-lg"></i>
                                 </button>
-                            </form>
-                        </td>
-                    </tr>
-                    <!-- Modal Edit Dosen -->
-                    <div id="edit-item-modal-<?php echo $i; ?>" tabindex="-1" aria-hidden="true"
-                        class="fixed inset-0 z-50 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto h-modal hidden">
-                        <div class="relative w-full max-w-full md:max-w-md h-full max-h-full md:h-auto">
-                            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                                <button type="button"
-                                    class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:text-gray-500 dark:hover:bg-gray-600 dark:hover:text-white"
-                                    data-modal-hide="#edit-item-modal-<?php echo $i; ?>">
-                                    <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M6 18L18 6M6 6l12 12"></path>
-                                    </svg>
-                                    <span class="sr-only">Close modal</span>
-                                </button>
-                                <div class="p-6 text-center">
-                                    <h3 class="text-lg font-semibold text-gray-900">Edit Dosen</h3>
-                                    <form action="/" method="POST" class="space-y-4">
-                                        @csrf
-                                        @method('PUT')
-                                        <div class="text-left mt-">
-                                            <label for="kode_dosen" class="block text-sm font-medium text-gray-900">Kode
-                                                Dosen</label>
-                                            <input type="text" name="kode_dosen" id="kode_dosen"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
-                                                placeholder="Masukkan Kode Dosen" required>
-                                        </div>
-                                        <div class="text-left mt-4">
-                                            <label for="nama_dosen" class="block text-sm font-medium text-gray-900">Nama
-                                                Dosen</label>
-                                            <input type="text" name="nama_dosen" id="nama_dosen"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
-                                                placeholder="Masukkan Nama Dosen" required>
-                                        </div>
+                                <form id="delete-form-{{ $item->id_dosen }}"
+                                    action="{{ route('adminDosen.destroy', $item->id_dosen) }}" method="POST"
+                                    class="inline-block">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="button"
+                                        class="inline-flex items-center justify-center w-8 h-8 text-white bg-red-700 border border-red-600 rounded shadow-sm hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 ml-1"
+                                        onclick="confirmDelete('{{ $item->id_dosen }}', '{{ $item->nama_dosen }}')">
+                                        <i class="fa-regular fa-trash-can text-base"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        <!-- Modal Edit Dosen -->
+                        <div id="edit-item-modal-{{ $item->id_dosen }}" tabindex="-1" aria-hidden="true"
+                            class="fixed inset-0 z-50 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto h-modal hidden">
+                            <div class="relative w-full max-w-full md:max-w-md h-full max-h-full md:h-auto">
+                                <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                    <button type="button"
+                                        class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:text-gray-500 dark:hover:bg-gray-600 dark:hover:text-white"
+                                        data-modal-hide="#edit-item-modal-{{ $item->id_dosen }}">
+                                        <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M6 18L18 6M6 6l12 12"></path>
+                                        </svg>
+                                        <span class="sr-only">Close modal</span>
+                                    </button>
+                                    <div class="p-6 text-center">
+                                        <h3 class="text-lg font-semibold text-gray-900">Edit Dosen</h3>
+                                        <form action="{{ route('adminDosen.update', $item->id_dosen) }}" method="POST"
+                                            class="space-y-4">
+                                            @csrf
+                                            @method('PUT')
+                                            <div class="text-left mt-">
+                                                <label for="kd_dosen"
+                                                    class="block text-sm font-medium text-gray-900">Kode
+                                                    Dosen</label>
+                                                <input type="text" name="kd_dosen" id="kd_dosen"
+                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
+                                                    value="{{ $item->kd_dosen }}">
+                                            </div>
+                                            <div class="text-left mt-4">
+                                                <label for="nama_dosen"
+                                                    class="block text-sm font-medium text-gray-900">Nama
+                                                    Dosen</label>
+                                                <input type="text" name="nama_dosen" id="nama_dosen"
+                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
+                                                    value="{{ $item->nama_dosen }}">
+                                            </div>
 
-                                        <div class="text-left mt-4">
-                                            <label for="nip"
-                                                class="block text-sm font-medium text-gray-900">NIP</label>
-                                            <input type="text" name="nip" id="nip"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
-                                                placeholder="Masukkan NIP Dosen" required>
-                                        </div>
-                                        <div class="text-left mt-4">
-                                            <label for="no_hp"
-                                                class="block text-sm font-medium text-gray-900">Nomor Handphone</label>
-                                            <input type="tel" name="no_hp" id="no_hp"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
-                                                placeholder="Masukkan Nomor Handphone" required
-                                                pattern="[0-9]{10,13}">
-                                        </div>
+                                            <div class="text-left mt-4">
+                                                <label for="NIP"
+                                                    class="block text-sm font-medium text-gray-900">NIP</label>
+                                                <input type="text" name="NIP" id="NIP"
+                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
+                                                    value="{{ $item->NIP }}">
+                                            </div>
+                                            <div class="text-left mt-4">
+                                                <label for="no_hp"
+                                                    class="block text-sm font-medium text-gray-900">Nomor
+                                                    Handphone</label>
+                                                <input type="tel" name="no_hp" id="no_hp"
+                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
+                                                    value="{{ $item->no_hp }}">
+                                            </div>
 
-                                        <div class="flex justify-end">
-                                            <button type="submit"
-                                                class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 font-medium text-sm my-2">
-                                                Simpan
-                                            </button>
-                                        </div>
-                                    </form>
+                                            <div class="flex justify-end">
+                                                <button type="submit"
+                                                    class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 font-medium text-sm my-2">
+                                                    Simpan
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <?php endfor; ?>
+                    @endforeach
                 </tbody>
 
             </table>
@@ -154,11 +158,11 @@
                         <span class="sr-only">Close modal</span>
                     </button>
                 </div>
-                <form action="" method="POST" class="p-4">
+                <form action="{{ route('adminDosen.store') }}" method="POST" class="p-4">
                     @csrf
-                    <div class="text-left mt-">
-                        <label for="kode_dosen" class="block text-sm font-medium text-gray-900">Kode Dosen</label>
-                        <input type="text" name="kode_dosen" id="kode_dosen"
+                    <div class="text-left">
+                        <label for="kd_dosen" class="block text-sm font-medium text-gray-900">Kode Dosen</label>
+                        <input type="text" name="kd_dosen" id="kd_dosen"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
                             placeholder="Masukkan Kode Dosen" required>
                     </div>
@@ -170,8 +174,8 @@
                     </div>
 
                     <div class="text-left mt-4">
-                        <label for="nip" class="block text-sm font-medium text-gray-900">NIP</label>
-                        <input type="text" name="nip" id="nip"
+                        <label for="NIP" class="block text-sm font-medium text-gray-900">NIP</label>
+                        <input type="text" name="NIP" id="NIP"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
                             placeholder="Masukkan NIP Dosen" required>
                     </div>
@@ -179,7 +183,7 @@
                         <label for="no_hp" class="block text-sm font-medium text-gray-900">Nomor Handphone</label>
                         <input type="tel" name="no_hp" id="no_hp"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
-                            placeholder="Masukkan Nomor Handphone" required pattern="[0-9]{10,13}">
+                            placeholder="Masukkan Nomor Handphone" required>
                     </div>
                     <div class="flex justify-end">
                         <button type="submit"
@@ -191,35 +195,30 @@
             </div>
         </div>
     </div>
-    <div class="flex flex-col items-center mt-4">
-        <!-- Help text -->
-        <span class="text-sm text-gray-700 dark:text-gray-400">
-            Showing <span class="font-semibold text-gray-900 dark:text-white">1</span> to <span
-                class="font-semibold text-gray-900 dark:text-white">10</span> of <span
-                class="font-semibold text-gray-900 dark:text-white">100</span> Entries
-        </span>
-        <div class="inline-flex mt-2 xs:mt-0">
-            <!-- Buttons -->
-            <button
-                class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 rounded-s hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                <svg class="w-3.5 h-3.5 me-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                    fill="none" viewBox="0 0 14 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M13 5H1m0 0 4 4M1 5l4-4" />
-                </svg>
-                Prev
-            </button>
-            <button
-                class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 border-0 border-s border-gray-700 rounded-e hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                Next
-                <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                    fill="none" viewBox="0 0 14 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M1 5h12m0 0L9 1m4 4L9 9" />
-                </svg>
-            </button>
-        </div>
-    </div>
+   <!-- Custom Pagination -->
+   @if ($dosen->total() > 5)
+   <div class="flex flex-col items-center my-6">
+       <span class="text-sm text-gray-700 dark:text-gray-400">
+           Menampilkan <span
+               class="font-semibold text-gray-900 dark:text-white">{{ $dosen->firstItem() }}</span>
+           sampai
+           <span class="font-semibold text-gray-900 dark:text-white">{{ $dosen->lastItem() }}</span> dari <span
+               class="font-semibold text-gray-900 dark:text-white">{{ $dosen->total() }}</span> dosen
+       </span>
+       <div class="inline-flex mt-2 xs:mt-0">
+           <button {{ $dosen->onFirstPage() ? 'disabled' : '' }}
+               class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 rounded-s hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+               {{ $dosen->previousPageUrl() ? 'onclick=window.location.href=\'' . $dosen->previousPageUrl() . '\'' : '' }}>
+               Sebelumnya
+           </button>
+           <button {{ !$dosen->hasMorePages() ? 'disabled' : '' }}
+               class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 border-0 border-s border-gray-700 rounded-e hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+               {{ $dosen->nextPageUrl() ? 'onclick=window.location.href=\'' . $dosen->nextPageUrl() . '\'' : '' }}>
+               Selanjutnya
+           </button>
+       </div>
+   </div>
+@endif
 </div>
 
 
@@ -240,10 +239,10 @@
         });
     });
 
-    function confirmDelete() {
+    function confirmDelete(id, namaDosen) {
         Swal.fire({
             title: 'Apakah Anda yakin?',
-            text: "Anda tidak akan dapat mengembalikan dosen ini!",
+            text: "Anda tidak akan dapat mengembalikan dosen " + namaDosen,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -252,7 +251,6 @@
             cancelButtonText: 'Batal'
         }).then((result) => {
             if (result.isConfirmed) {
-                // Jika konfirmasi, submit form penghapusan
                 document.getElementById('delete-form-' + id).submit();
             }
         })

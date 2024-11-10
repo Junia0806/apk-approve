@@ -90,30 +90,35 @@ Route::prefix('admin')->group(function () {
 
 // //ADMIN
 
-// Route::get('/admin-beranda', function () {
-//     return view('admin.beranda');
-// })->name('admin-beranda');
-// Route::get('/admin-kampus', function () {
-//     return view('admin.kampus');
-// })->name('admin-kampus');
-// Route::get('/admin-jurusan', function () {
-//     return view('admin.jurusan');
-// })->name('admin-jurusan');
-// Route::get('/admin-prodi', function () {
-//     return view('admin.prodi');
-// })->name('admin-prodi');
-// Route::get('/admin-dosen', function () {
-//     return view('admin.dosen');
-// })->name('admin-dosen');
-// Route::get('/admin-mataKuliah', function () {
-//     return view('admin.mataKuliah');
-// })->name('admin-mataKuliah');
-// Route::get('/admin-bimbingan', function () {
-//     return view('admin.bimbingan');
-// })->name('admin-bimbingan');
-// Route::get('/admin-presensi', function () {
-//     return view('admin.presensi');
-// })->name('admin-presensi');
-// Route::get('/admin-pengguna', function () {
-//     return view('admin.pengguna');
-// })->name('admin-pengguna');
+Route::get('/admin-beranda', function () {
+    return view('admin.beranda');
+})->name('admin-beranda');
+
+Route::get('/admin/kampus', [kampusAdmin::class, 'index'])->name('admin-kampus');
+Route::post('/adminKampus', [kampusAdmin::class, 'store'])->name('adminKampus.store');
+Route::delete('/admin/kampus/{id_kampus}', [kampusAdmin::class, 'destroy'])->name('adminKampus.destroy');
+Route::put('/kampus/update/{id_kampus}', [kampusAdmin::class, 'update'])->name('adminKampus.update');
+
+Route::get('/admin-prodi', function () {
+    return view('admin.prodi');
+})->name('admin-prodi');
+
+Route::get('/admin/dosen', [DosenAdmin::class, 'index'])->name('admin-dosen');
+Route::post('/adminDosen', [DosenAdmin::class, 'store'])->name('adminDosen.store');
+Route::delete('/admin/dosen/{id_Dosen}', [DosenAdmin::class, 'destroy'])->name('adminDosen.destroy');
+Route::put('/Dosen/update/{id_Dosen}', [DosenAdmin::class, 'update'])->name('adminDosen.update');
+
+Route::get('/admin/matkul', [matkulAdmin::class, 'index'])->name('admin-mataKuliah');
+Route::post('/adminmatkul', [matkulAdmin::class, 'store'])->name('adminmatkul.store');
+Route::delete('/admin/matkul/{id_matkul}', [matkulAdmin::class, 'destroy'])->name('adminmatkul.destroy');
+Route::put('/matkul/update/{id_matkul}', [matkulAdmin::class, 'update'])->name('adminmatkul.update');
+
+Route::get('/admin-bimbingan', function () {
+    return view('admin.bimbingan');
+})->name('admin-bimbingan');
+Route::get('/admin-presensi', function () {
+    return view('admin.presensi');
+})->name('admin-presensi');
+Route::get('/admin-pengguna', function () {
+    return view('admin.pengguna');
+})->name('admin-pengguna');
