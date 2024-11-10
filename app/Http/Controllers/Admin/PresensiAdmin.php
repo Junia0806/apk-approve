@@ -4,106 +4,82 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\DataPresensi; // Asumsi menggunakan model Presensi
+use App\Models\DataPresensi;
+use App\Models\DataDosen;
 
 class PresensiAdmin extends Controller
 {
     // Menampilkan daftar data
     public function index()
     {
-        $presensi = DataPresensi::all(); // Mengambil semua data presensi
-        return response()->json($presensi);
+        return view('admin.presensi');
     }
 
     // Menampilkan form untuk membuat data baru
     public function create()
     {
-        return response()->json(['message' => 'Form untuk membuat data presensi baru'], 200);
-    }
+        $today = Carbon::today()->toDateString(); // Tanggal hari ini
+        $dayName = Carbon::now()->locale('id')->dayName; // Nama hari dalam bahasa Indonesia
 
-    // Menyimpan data baru
-    public function store(Request $request)
-    {
-        $request->validate([
-            'id_dosen' => 'required|integer',
-            'tanggal' => 'required|date',
-            'status' => 'required|string',
-        ]);
+        // Ambil semua dosen dari tabel dosen
+        $dosenList = DataDosen::all();
 
-        $presensi = DataPresensi::create([
-            'id_dosen' => $request->id_dosen,
-            'tanggal' => $request->tanggal,
-            'status' => $request->status,
-        ]);
+        foreach ($dosenList as $dosen) {
+            // Cek apakah data presensi sudah ada untuk dosen dan tanggal ini
+            $existingPresensi = DataPresensi::where('id_dosen', $dosen->id)
+                ->where('tgl_presensi', $today)
+                ->first();
 
-        return response()->json([
-            'message' => 'Data presensi berhasil ditambahkan.',
-            'data' => $presensi
-        ], 201);
+            // Jika belum ada, buat data presensi baru
+            if (!$existingPresensi) {
+                DataPresensi::create([
+                    'id_dosen' => $dosen->id,
+                    'tgl_presensi' => $today,
+                    'hari' => $dayName,
+                    'status' => NULL,
+                ]);
+            }
+        }
+
+        return redirect()->back()->with('success', 'Presensi semua dosen berhasil digenerate untuk hari ini.');
     }
 
     // Menampilkan data tertentu berdasarkan ID
-    public function show($id)
+    public function show($tanggal)
     {
-        $presensi = DataPresensi::find($id);
+        $presensi = DataPresensi::with('dosen') // Memuat relasi dosen
+            ->whereDate('tgl_bimbingan', $tanggal)
+            ->get()
+            ->map(function ($bimbingan) {
+                    $tanggal = Carbon::parse($bimbingan->tgl_bimbingan); // Pastikan nama kolom benar
 
-        if (!$presensi) {
-            return response()->json(['message' => 'Presensi tidak ditemukan'], 404);
-        }
+                    // Pastikan data dosen tersedia
+                    if ($bimbingan->dosen) {
+                        return [
+                            'tanggal'   => $tanggal->format('d-m-Y'), // Format tanggal
+                            'hari'      => $bimbingan->hari,
+                            'nama_dosen' => $bimbingan->dosen->nama, // Mengambil nama dosen
+                            'nama'      => $bimbingan->nama,
+                            'keperluan' => $bimbingan->keperluan,
+                            'status'    => $bimbingan->status,
+                        ];
+                    }
+                })
+            ->values(); // Mengatur ulang indeks array
 
+        // Mengembalikan response dalam format JSON
         return response()->json($presensi);
-    }
-
-    // Menampilkan form untuk mengedit data tertentu
-    public function edit($id)
-    {
-        $presensi = DataPresensi::find($id);
-
-        if (!$presensi) {
-            return response()->json(['message' => 'Presensi tidak ditemukan'], 404);
-        }
-
-        return response()->json(['message' => 'Form untuk mengedit presensi', 'data' => $presensi]);
     }
 
     // Memperbarui data tertentu berdasarkan ID
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'id_dosen' => 'required|integer',
-            'tanggal' => 'required|date',
-            'status' => 'required|string',
-        ]);
-
         $presensi = DataPresensi::find($id);
 
-        if (!$presensi) {
-            return response()->json(['message' => 'Presensi tidak ditemukan'], 404);
-        }
-
         $presensi->update([
-            'id_dosen' => $request->id_dosen,
-            'tanggal' => $request->tanggal,
             'status' => $request->status,
         ]);
 
-        return response()->json([
-            'message' => 'Data presensi berhasil diperbarui.',
-            'data' => $presensi
-        ], 200);
-    }
-
-    // Menghapus data tertentu berdasarkan ID
-    public function destroy($id)
-    {
-        $presensi = DataPresensi::find($id);
-
-        if (!$presensi) {
-            return response()->json(['message' => 'Presensi tidak ditemukan'], 404);
-        }
-
-        $presensi->delete();
-
-        return response()->json(['message' => 'Presensi berhasil dihapus.'], 200);
+        return redirect()->back()->with('success', 'Presensi semua dosen berhasil diupdate untuk hari ini.');
     }
 }

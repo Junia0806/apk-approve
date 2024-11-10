@@ -71,37 +71,6 @@ class UserAdmin extends Controller
         return response()->json(['message' => 'Form untuk mengedit data user', 'data' => $user]);
     }
 
-    // Memperbarui data tertentu berdasarkan ID
-    public function update(Request $request, $id)
-    {
-        // Validasi data yang diterima dari request
-        $request->validate([
-            'username' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $id,
-            'role' => 'required|string',
-            'password' => 'nullable|string|min:6', // Password opsional untuk update
-        ]);
-
-        $user = User::find($id); // Mencari user berdasarkan ID
-
-        if (!$user) {
-            return response()->json(['message' => 'User tidak ditemukan'], 404);
-        }
-
-        // Memperbarui data user
-        $user->update([
-            'username' => $request->username,
-            'email' => $request->email,
-            'role' => $request->role,
-            'password' => $request->password ? Hash::make($request->password) : $user->password, // Update password jika diberikan
-        ]);
-
-        return response()->json([
-            'message' => 'User berhasil diperbarui.',
-            'data' => $user
-        ], 200);
-    }
-
     // Menghapus data tertentu berdasarkan ID
     public function destroy($id)
     {
