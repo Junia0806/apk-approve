@@ -1,4 +1,5 @@
-@extends('admin.default')@section('content')
+@extends('admin.default')
+@section('content')
 <div class="container mx-auto p-6 mt-10 min-h-screen">
     <div class="flex items-center justify-between p-2 border-b">
         <div class="flex-1 text-center">

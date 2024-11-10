@@ -17,7 +17,6 @@ class BimbinganAdmin extends Controller
         $dosenList = DataDosen::all();
 
         // Mengirim data dosen ke view
-        // return view('admin.bimbingan', $dosenList);
         return view('admin.bimbingan', ['dosenList' => $dosenList]);
     }
 
@@ -54,6 +53,7 @@ class BimbinganAdmin extends Controller
 
                 if ($bimbingan->sesi) {
                     return [
+                        'id_bimbingan' => $bimbingan->id_bimbingan,
                         'tanggal'   => $tanggal->format('d-m-Y'), // Format tanggal
                         'hari'      => $bimbingan->hari,
                         'jam_awal'  => $bimbingan->sesi->jam_awal,
@@ -72,14 +72,15 @@ class BimbinganAdmin extends Controller
     // Memperbarui data tertentu berdasarkan ID
     public function update(Request $request, $id)
     {
-        $bimbingan = DataBimbingan::find($id);
-        $bimbingan->update([
-            'status' => $request->status,
+        // dd($request,$id);
+        $request->validate([
+            'status' => 'required|integer|in:0,1,2'
         ]);
 
-        return response()->json([
-            'message' => 'Status Bimbingan berhasil diperbarui.',
-            'data' => $bimbingan
-        ], 200);
+        $bimbingan = DataBimbingan::find($id);
+        $bimbingan->status = $request->status;
+        $bimbingan->save();
+
+        return redirect()->back();
     }
 }
