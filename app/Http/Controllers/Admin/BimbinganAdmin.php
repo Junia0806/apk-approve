@@ -20,34 +20,6 @@ class BimbinganAdmin extends Controller
         return view('admin.bimbingan', ['dosenList' => $dosenList]);
     }
 
-    // Method untuk mengambil data bimbingan berdasarkan dosen
-    public function getBimbinganByDosen($dosenId)
-    {
-        // Mengambil data bimbingan yang berhubungan dengan dosen
-        $bimbingans = DataBimbingan::with('sesi')
-            ->where('id_dosen', $dosenId)  // Filter berdasarkan dosen yang dipilih
-            ->get()
-            ->map(function ($bimbingan) {
-                // Menyesuaikan format data yang akan dikembalikan
-                $tanggal = Carbon::parse($bimbingan->tgl_bimbigan);
-
-                if ($bimbingan->sesi) {
-                    return [
-                        'tanggal'   => $tanggal->format('Y-m-d'), // Format tanggal
-                        'hari'      => $bimbingan->hari,
-                        'jam_awal'  => $bimbingan->sesi->jam_awal,
-                        'jam_akhir' => $bimbingan->sesi->jam_akhir,
-                        'nama'      => $bimbingan->nama,
-                        'keperluan' => $bimbingan->keperluan,
-                        'status'    => $bimbingan->status, // Menambahkan status jika diperlukan
-                    ];
-                }
-            });
-
-        // Mengembalikan response dalam format JSON
-        return response()->json($bimbingans);
-    }
-
     // Menampilkan form untuk membuat data baru
     public function create()
     {
@@ -74,16 +46,32 @@ class BimbinganAdmin extends Controller
         ], 201);
     }
 
-    // Menampilkan data tertentu berdasarkan ID
+    // Menampilkan data dosen terpilih
     public function show($id)
     {
-        $bimbingan = DataBimbingan::find($id);
+        // Mengambil data bimbingan yang berhubungan dengan dosen
+        $bimbingans = DataBimbingan::with('sesi')
+            ->where('id_dosen', $id)  // Filter berdasarkan dosen yang dipilih
+            ->get()
+            ->map(function ($bimbingan) {
+                // Menyesuaikan format data yang akan dikembalikan
+                $tanggal = Carbon::parse($bimbingan->tgl_bimbigan);
 
-        if (!$bimbingan) {
-            return response()->json(['message' => 'Data bimbingan tidak ditemukan'], 404);
-        }
+                if ($bimbingan->sesi) {
+                    return [
+                        'tanggal'   => $tanggal->format('Y-m-d'), // Format tanggal
+                        'hari'      => $bimbingan->hari,
+                        'jam_awal'  => $bimbingan->sesi->jam_awal,
+                        'jam_akhir' => $bimbingan->sesi->jam_akhir,
+                        'nama'      => $bimbingan->nama,
+                        'keperluan' => $bimbingan->keperluan,
+                        'status'    => $bimbingan->status, // Menambahkan status jika diperlukan
+                    ];
+                }
+            });
 
-        return response()->json($bimbingan);
+        // Mengembalikan response dalam format JSON
+        return response()->json($bimbingans);
     }
 
     // Menampilkan form untuk mengedit data tertentu

@@ -47,6 +47,8 @@ Route::prefix('admin')->group(function () {
     Route::resource('presensi', PresensiAdmin::class);
     Route::resource('user', UserAdmin::class);
     Route::resource('sesi', SesiAdmin::class);
+
+    // Route::get('/bimbingan/getData/{$1}', [BimbinganAdmin::class, 'getBimbinganByDosen']);
 });
 
 
@@ -90,30 +92,30 @@ Route::prefix('admin')->group(function () {
 
 // //ADMIN
 
-// Route::get('/admin-beranda', function () {
-//     return view('admin.beranda');
-// })->name('admin-beranda');
-// Route::get('/admin-kampus', function () {
-//     return view('admin.kampus');
-// })->name('admin-kampus');
-// Route::get('/admin-jurusan', function () {
-//     return view('admin.jurusan');
-// })->name('admin-jurusan');
-// Route::get('/admin-prodi', function () {
-//     return view('admin.prodi');
-// })->name('admin-prodi');
-// Route::get('/admin-dosen', function () {
-//     return view('admin.dosen');
-// })->name('admin-dosen');
-// Route::get('/admin-mataKuliah', function () {
-//     return view('admin.mataKuliah');
-// })->name('admin-mataKuliah');
-// Route::get('/admin-bimbingan', function () {
-//     return view('admin.bimbingan');
-// })->name('admin-bimbingan');
-// Route::get('/admin-presensi', function () {
-//     return view('admin.presensi');
-// })->name('admin-presensi');
-// Route::get('/admin-pengguna', function () {
-//     return view('admin.pengguna');
-// })->name('admin-pengguna');
+Route::get('/admin-beranda', function () {
+    return view('admin.beranda');
+})->name('admin-beranda');
+Route::get('/admin-kampus', function () {
+    return view('admin.kampus');
+})->name('admin-kampus');
+Route::get('/admin-jurusan', function () {
+    return view('admin.jurusan');
+})->name('admin-jurusan');
+Route::get('/admin-prodi', function () {
+    return view('admin.prodi');
+})->name('admin-prodi');
+Route::get('/admin-dosen', function () {
+    return view('admin.dosen');
+})->name('admin-dosen');
+Route::get('/admin-mataKuliah', function () {
+    return view('admin.mataKuliah');
+})->name('admin-mataKuliah');
+Route::get('/admin-bimbingan', function () {
+    return view('admin.bimbingan');
+})->name('admin-bimbingan');
+Route::get('/admin-presensi', function () {
+    return view('admin.presensi');
+})->name('admin-presensi');
+Route::get('/admin-pengguna', function () {
+    return view('admin.pengguna');
+})->name('admin-pengguna');
