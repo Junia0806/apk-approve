@@ -11,8 +11,8 @@ class DosenAdmin extends Controller
     // Menampilkan daftar data
     public function index()
     {
-        $dosen = DataDosen::all(); // Mengambil semua data dosen
-        return response()->json($dosen);
+        $dosen = DataDosen::orderBy('id_dosen', 'desc')->paginate(5);
+        return view('admin.dosen', compact('dosen'));
     }
 
     // Menampilkan form untuk membuat data baru
@@ -38,10 +38,7 @@ class DosenAdmin extends Controller
             'no_hp' => $request->no_hp,
         ]);
 
-        return response()->json([
-            'message' => 'Dosen berhasil ditambahkan.',
-            'data' => $dosen
-        ], 201);
+        return redirect()->route('admin-dosen')->with('success', 'Dosen berhasil ditambahkan.');
     }
 
     // Menampilkan data tertentu berdasarkan ID
@@ -91,10 +88,7 @@ class DosenAdmin extends Controller
             'no_hp' => $request->no_hp,
         ]);
 
-        return response()->json([
-            'message' => 'Dosen berhasil diperbarui.',
-            'data' => $dosen
-        ], 200);
+        return redirect()->route('admin-dosen')->with('success', 'Dosen berhasil diperbarui.');
     }
 
     // Menghapus data tertentu berdasarkan ID
@@ -108,6 +102,6 @@ class DosenAdmin extends Controller
 
         $dosen->delete();
 
-        return response()->json(['message' => 'Dosen berhasil dihapus.'], 200);
+        return redirect()->route('admin-dosen')->with('success', 'Dosen terkait berhasil dihapus.');
     }
 }

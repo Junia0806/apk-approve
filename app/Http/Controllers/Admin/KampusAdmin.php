@@ -11,8 +11,8 @@ class KampusAdmin extends Controller
     // Menampilkan daftar data
     public function index()
     {
-        $kampus = DataKampus::all();
-        return response()->json($kampus);
+        $kampus = DataKampus::orderBy('id_kampus', 'desc')->paginate(5);
+        return view('admin.kampus', compact('kampus'));
     }
 
     // Menampilkan form untuk membuat data baru
@@ -36,10 +36,7 @@ class KampusAdmin extends Controller
             'alamat' => $request->alamat,
         ]);
 
-        return response()->json([
-            'message' => 'Kampus berhasil ditambahkan.',
-            'data' => $kampus
-        ], 201);
+        return redirect()->route('admin-kampus')->with('success', 'Kampus berhasil ditambahkan.');
     }
 
     // Menampilkan data tertentu berdasarkan ID
@@ -48,10 +45,12 @@ class KampusAdmin extends Controller
         $kampus = DataKampus::find($id);
 
         if (!$kampus) {
-            return response()->json(['message' => 'Data kampus tidak ditemukan'], 404);
+            // return response()->json(['message' => 'Data kampus tidak ditemukan'], 404);
+            return redirect()->route('kampus.index')->with('error', 'Toko tidak ditemukan.');
         }
 
-        return response()->json($kampus);
+        // return response()->json($kampus);
+        return view('kampus.show', compact('kampus'));
     }
 
     // Menampilkan form untuk mengedit data tertentu
@@ -67,7 +66,7 @@ class KampusAdmin extends Controller
     }
 
     // Memperbarui data tertentu berdasarkan ID
-    public function update(Request $request, $id)
+    public function update(Request $request, $id_kampus)
     {
         $request->validate([
             'kd_kampus' => 'required|string',
@@ -75,11 +74,11 @@ class KampusAdmin extends Controller
             'alamat' => 'required|string',
         ]);
 
-        $kampus = DataKampus::find($id);
+        $kampus = DataKampus::find($id_kampus);
 
-        if (!$kampus) {
-            return response()->json(['message' => 'Data kampus tidak ditemukan'], 404);
-        }
+        // if (!$kampus) {
+        //     return response()->json(['message' => 'Data kampus tidak ditemukan'], 404);
+        // }
 
         $kampus->update([
             'kd_kampus' => $request->kd_kampus,
@@ -87,10 +86,7 @@ class KampusAdmin extends Controller
             'alamat' => $request->alamat,
         ]);
 
-        return response()->json([
-            'message' => 'Kampus berhasil diperbarui.',
-            'data' => $kampus
-        ], 200);
+        return redirect()->route('admin-kampus')->with('success', 'Kampus berhasil diperbarui.');
     }
 
     // Menghapus data tertentu berdasarkan ID
@@ -103,7 +99,7 @@ class KampusAdmin extends Controller
         }
 
         $kampus->delete();
-
-        return response()->json(['message' => 'Kampus berhasil dihapus.'], 200);
+        return redirect()->route('admin-kampus')->with('success', 'Kampus terkait berhasil dihapus.');
+        // return response()->json(['message' => 'Kampus berhasil dihapus.'], 200);
     }
 }
