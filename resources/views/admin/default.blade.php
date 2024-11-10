@@ -28,7 +28,7 @@
                     <a href="https://flowbite.com" class="flex ms-2 md:me-24">
                         <img src="{{ asset('asset/logo.png') }}" class="h-8 me-3" alt="Logo" />
                         <span class="self-center text-l font-semibold sm:text-xl whitespace-nowrap dark:text-white">
-                           Admin Politeknik Negeri Jember</span>
+                            Admin Politeknik Negeri Jember</span>
                     </a>
                 </div>
                 <div class="flex items-center">
@@ -85,9 +85,6 @@
                         <span class="ms-3">Kampus</span>
                     </a>
                 </li>
-                {{-- 
-                <li>
-                   --}}
                 <li>
                     <a href="{{ route('admin-dosen') }}"
                         class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
@@ -102,6 +99,22 @@
                         <i
                             class="fa-solid fa-book-open w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
                         <span class="ms-3">Mata Kuliah</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin-sesi') }}"
+                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        <i
+                            class="fa-solid fa-stopwatch w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+                        <span class="ms-3">Sesi</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin-jadwal') }}"
+                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        <i
+                            class="fa-regular fa-calendar-days w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+                        <span class="ms-3">Jadwal</span>
                     </a>
                 </li>
                 <li>

@@ -124,3 +124,11 @@ Route::get('/admin-presensi', function () {
 Route::get('/admin-pengguna', function () {
     return view('admin.pengguna');
 })->name('admin-pengguna');
+
+Route::get('/admin-sesi', function () {
+    return view('admin.sesi');
+})->name('admin-sesi');
+
+Route::get('/admin-jadwal', function () {
+    return view('admin.jadwal');
+})->name('admin-jadwal');
