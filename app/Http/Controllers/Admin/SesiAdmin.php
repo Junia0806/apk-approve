@@ -15,20 +15,9 @@ class SesiAdmin extends Controller
         return response()->json($sesis);
     }
 
-    // Menampilkan form untuk membuat data baru
-    public function create()
-    {
-        return response()->json(['message' => 'Form untuk membuat data sesi baru'], 200);
-    }
-
     // Menyimpan data baru
     public function store(Request $request)
     {
-        $request->validate([
-            'jam_awal' => 'required|string',
-            'jam_akhir' => 'required|string',
-        ]);
-
         $sesi = DataSesi::create([
             'jam_awal' => $request->jam_awal,
             'jam_akhir' => $request->jam_akhir,
@@ -45,48 +34,19 @@ class SesiAdmin extends Controller
     {
         $sesi = DataSesi::find($id);
 
-        if (!$sesi) {
-            return response()->json(['message' => 'Data tidak ditemukan'], 404);
-        }
-
         return response()->json($sesi);
-    }
-
-    // Menampilkan form untuk mengedit data tertentu
-    public function edit($id)
-    {
-        $sesi = DataSesi::find($id);
-
-        if (!$sesi) {
-            return response()->json(['message' => 'Data tidak ditemukan'], 404);
-        }
-
-        return response()->json(['message' => 'Form untuk mengedit sesi', 'data' => $sesi]);
     }
 
     // Memperbarui data tertentu berdasarkan ID
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'jam_awal' => 'required|string',
-            'jam_akhir' => 'required|string',
-        ]);
 
         $sesi = DataSesi::find($id);
-
-        if (!$sesi) {
-            return response()->json(['message' => 'Data tidak ditemukan'], 404);
-        }
 
         $sesi->update([
             'jam_awal' => $request->jam_awal,
             'jam_akhir' => $request->jam_akhir,
         ]);
-
-        return response()->json([
-            'message' => 'Sesi berhasil diperbarui.',
-            'data' => $sesi
-        ], 200);
     }
 
     // Menghapus data tertentu berdasarkan ID

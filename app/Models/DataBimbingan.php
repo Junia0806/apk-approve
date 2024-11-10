@@ -44,7 +44,6 @@ class DataBimbingan extends Model
     {
         return $this->belongsTo(DataProdi::class, 'id_prodi');
     }
-
     // Relasi dengan model DataDosen
     public function dosen()
     {

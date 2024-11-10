@@ -47,6 +47,8 @@ Route::prefix('admin')->group(function () {
     Route::resource('presensi', PresensiAdmin::class);
     Route::resource('user', UserAdmin::class);
     Route::resource('sesi', SesiAdmin::class);
+
+    // Route::get('/bimbingan/getData/{$1}', [BimbinganAdmin::class, 'getBimbinganByDosen']);
 });
 
 
