@@ -12,7 +12,9 @@ class MatkulAdmin extends Controller
     public function index()
     {
         $matkuls = DataMatkul::all(); // Mengambil semua data matkul
-        return response()->json($matkuls);
+        // return response()->json($matkuls);
+        $matkuls = DataMatkul::orderBy('id_matkul', 'desc')->paginate(5);
+        return view('admin.mataKuliah', compact('matkuls'));
     }
 
     // Menampilkan form untuk membuat data baru
@@ -38,10 +40,7 @@ class MatkulAdmin extends Controller
             'semester' => $request->semester,
         ]);
 
-        return response()->json([
-            'message' => 'Matkul berhasil ditambahkan.',
-            'data' => $matkul
-        ], 201);
+        return redirect()->route('admin-mataKuliah')->with('success', 'Mata Kuliah berhasil diperbarui.');
     }
 
     // Menampilkan data tertentu berdasarkan ID
@@ -91,10 +90,7 @@ class MatkulAdmin extends Controller
             'semester' => $request->semester,
         ]);
 
-        return response()->json([
-            'message' => 'Matkul berhasil diperbarui.',
-            'data' => $matkul
-        ], 200);
+        return redirect()->route('admin-mataKuliah')->with('success', 'Mata Kuliah berhasil diperbarui.');
     }
 
     // Menghapus data tertentu berdasarkan ID
@@ -108,6 +104,6 @@ class MatkulAdmin extends Controller
 
         $matkul->delete();
 
-        return response()->json(['message' => 'Matkul berhasil dihapus.'], 200);
+        return redirect()->route('admin-mataKuliah')->with('success', 'Mata Kuliah berhasil dihapus.');
     }
 }
