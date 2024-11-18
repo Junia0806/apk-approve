@@ -118,12 +118,16 @@ Route::put('/matkul/update/{id_matkul}', [matkulAdmin::class, 'update'])->name('
 Route::get('/admin-bimbingan', function () {
     return view('admin.bimbingan');
 })->name('admin-bimbingan');
+
 Route::get('/admin-presensi', function () {
     return view('admin.presensi');
 })->name('admin-presensi');
-Route::get('/admin-pengguna', function () {
-    return view('admin.pengguna');
-})->name('admin-pengguna');
+Route::get('/pengguna', [UserAdmin::class, 'index'])->name('adminPengguna');
+Route::post('/pengguna', [UserAdmin::class, 'store'])->name('adminPengguna.store');
+Route::get('/pengguna/{id}', [UserAdmin::class, 'show'])->name('adminPengguna.show');
+Route::put('/pengguna/{id}', [UserAdmin::class, 'update'])->name('adminPengguna.update');
+Route::delete('/pengguna/{id}', [UserAdmin::class, 'destroy'])->name('adminPengguna.destroy');
+
 
 // Route::get('/admin-sesi', function () {
 //     return view('admin.sesi');

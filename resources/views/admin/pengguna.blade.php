@@ -2,12 +2,13 @@
 @section('content')
     <div class="container mx-auto p-6 mt-10 min-h-screen">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
             <!-- Card Total Dosen -->
             <div class="bg-white shadow-lg rounded-lg p-6">
                 <div class="flex items-center justify-between">
                     <div>
                         <h2 class="text-lg font-semibold text-gray-700">Total Dosen</h2>
-                        <p class="mt-2 text-3xl font-bold text-green-600">3</p>
+                        <p class="mt-2 text-3xl font-bold text-green-600">{{ $totalDosen }}</p>
                     </div>
                     <div class="bg-green-100 p-4 rounded-full flex items-center justify-center  w-16 h-16">
                         <i class="fa-solid fa-user-tie text-3xl text-green-600"></i>
@@ -21,7 +22,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <h2 class="text-lg font-semibold text-gray-700">Total Teknisi</h2>
-                        <p class="mt-2 text-3xl font-bold text-red-600">2</p>
+                        <p class="mt-2 text-3xl font-bold text-red-600">{{ $totalTeknisi }}</p>
                     </div>
                     <div class="bg-red-100 p-4 rounded-full flex items-center justify-center  w-16 h-16">
                         <i class="fa-solid fa-user-gear text-3xl text-red-600"></i>
@@ -39,7 +40,7 @@
                             class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Your Email</label>
                         <button id="dropdown-button" data-dropdown-toggle="dropdown"
                             class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600"
-                            type="button">Pilih Status
+                            type="button">Pilih role
                             <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                 fill="none" viewBox="0 0 10 6">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -57,10 +58,7 @@
                                     <button type="button"
                                         class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Teknisi</button>
                                 </li>
-                                <li>
-                                    <button type="button"
-                                        class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Admin</button>
-                                </li>
+                             
                             </ul>
                         </div>
                         <div class="relative w-full">
@@ -93,95 +91,33 @@
                 <table class="w-full border-separate border-spacing-0 text-sm text-black">
                     <thead class="bg-gray-200 text-gray-800">
                         <tr>
-                            <th class="p-2 text-center">Pengguna</th>
+                            <th class="p-2 text-center">Username</th>
                             <th class="p-2 text-center">Email</th>
-                            <th class="p-2 text-center">Status</th>
+                            <th class="p-2 text-center">Role</th>
                             <th class="p-2 text-center">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white text-center" id="dosenTableBody">
-                        <?php for ($i = 1; $i <= 5; $i++): ?>
-                        <tr class="border-b border-gray-200">
-                            <td class="p-2">Zayd Al Munsshif, A,Md.Kom</td>
-                            <td class="p-2">zaydalmunsshif@polije.ac.id</td>
-                            <td class="p-2">
-                                <span
-                                    class="px-2 py-1 rounded text-white 
-                              <?php echo $i % 2 == 0 ? 'bg-gray-400' : 'bg-green-400'; ?>">
-                                    <?php echo $i % 2 == 0 ? 'Teknisi' : 'Dosen'; ?>
-                                </span>
-                            </td>
-                            <td class="p-2">
-                                {{-- <button type="button" data-modal-target="#edit-item-modal-<?php echo $i; ?>"
-                                    class="inline-flex items-center justify-center w-8 h-8 text-gray-800 bg-gray-200 border border-gray-300 rounded-sm shadow-sm hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500">
-                                    <i class="fa-regular fa-pen-to-square text-lg"></i>
-                                </button> --}}
-                                <form id="delete-form-<?php echo $i; ?>" action="/" method="POST"
-                                    class="inline-block">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="button"
-                                        class="inline-flex items-center justify-center w-8 h-8 text-white bg-red-700 border border-red-600 rounded shadow-sm hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 ml-1"
-                                        onclick="confirmDelete('<?php echo sprintf('%03d', $i); ?>')">
-                                        <i class="fa-regular fa-trash-can text-base"></i>
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-
-                        <!-- Modal Edit -->
-                        {{-- <div id="edit-item-modal-<?php echo $i; ?>" tabindex="-1" aria-hidden="true"
-                            class="fixed inset-0 z-50 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto h-modal hidden">
-                            <div class="relative w-full max-w-full md:max-w-md h-full max-h-full md:h-auto">
-                                <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                                    <button type="button"
-                                        class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:text-gray-500 dark:hover:bg-gray-600 dark:hover:text-white"
-                                        data-modal-hide="#edit-item-modal-<?php echo $i; ?>">
-                                        <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M6 18L18 6M6 6l12 12"></path>
-                                        </svg>
-                                        <span class="sr-only">Close modal</span>
-                                    </button>
-                                    <div class="p-6 text-center">
-                                        <h3 class="text-lg font-semibold text-gray-900">Edit Pengguna</h3>
-                                        <form action="/" method="POST" class="space-y-4">
-                                            @csrf
-                                            @method('PUT')
-                                            <div class="text-left mt-4">
-                                                <label for="nik"
-                                                    class="block text-sm font-medium text-gray-900">NIK</label>
-                                                <input type="text" name="nik" id="nik"
-                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
-                                                    placeholder="Masukkan NIK" required>
-                                            </div>
-                                            <div class="text-left mt-4">
-                                                <label for="nama_dosen"
-                                                    class="block text-sm font-medium text-gray-900">Nama</label>
-                                                <input type="text" name="nama_dosen" id="nama_dosen"
-                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
-                                                    placeholder="Masukkan Nama" required>
-                                            </div>
-                                            <div class="text-left mt-4">
-                                                <label for="jabatan"
-                                                    class="block text-sm font-medium text-gray-900">Jabatan</label>
-                                                <input type="text" name="jabatan" id="jabatan"
-                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
-                                                    placeholder="Masukkan Jabatan" required>
-                                            </div>
-                                            <div class="flex justify-end">
-                                                <button type="submit"
-                                                    class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 font-medium text-sm my-2">
-                                                    Simpan
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> --}}
-                        <?php endfor; ?>
+                        @foreach ($users as $index => $item)
+                            <tr class="border-b border-gray-200">
+                                <td class="p-2">{{ $item->username }}</td>
+                                <td class="p-2">{{ $item->email }}</td>
+                                <td class="p-2">{{ $item->role }} </td>
+                                <td class="p-2">
+                                    <form id="delete-form-{{ $item->id_user }}"
+                                        action="{{ route('adminPengguna.destroy', $item->id_user) }}"method="POST"
+                                        class="inline-block">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button"
+                                            class="inline-flex items-center justify-center w-8 h-8 text-white bg-red-700 border border-red-600 rounded shadow-sm hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 ml-1"
+                                            onclick="confirmDelete('{{ $item->id_user }}', '{{ $item->username }}')">
+                                            <i class="fa-regular fa-trash-can text-base"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -205,31 +141,30 @@
                             <span class="sr-only">Close modal</span>
                         </button>
                     </div>
-                    <form action="" method="POST" class="p-4">
+                    <form action="{{ route('adminPengguna.store') }}" method="POST" class="p-4">
                         @csrf
-
                         <div class="text-left">
-                            <label for="nama_pengguna" class="block text-sm font-medium text-gray-900">Nama
+                            <label for="username" class="block text-sm font-medium text-gray-900">Username
                                 Pengguna</label>
-                            <input type="text" name="nama_pengguna" id="nama_pengguna"
+                            <input type="text" name="username" id="username"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
-                                placeholder="Masukkan Nama Pengguna" required>
+                                placeholder="Masukkan Username Pengguna" required>
                         </div>
 
                         <div class="text-left mt-4">
-                            <label for="email_pengguna" class="block text-sm font-medium text-gray-900">Email
+                            <label for="email" class="block text-sm font-medium text-gray-900">Email
                                 Pengguna</label>
-                            <input type="email" name="email_pengguna" id="email_pengguna"
+                            <input type="email" name="email" id="email"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
                                 placeholder="Masukkan Email Pengguna" required>
                         </div>
 
                         <div class="text-left mt-4">
-                            <label for="status" class="block text-sm font-medium text-gray-900">Status</label>
-                            <select name="status" id="status"
+                            <label for="role" class="block text-sm font-medium text-gray-900">role</label>
+                            <select name="role" id="role"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
                                 required>
-                                <option value="" disabled selected>Pilih Status</option>
+                                <option value="" disabled selected>Pilih role</option>
                                 <option value="dosen">Dosen</option>
                                 <option value="teknisi">Teknisi</option>
                             </select>
@@ -241,15 +176,6 @@
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
                                 placeholder="Masukkan Password" required>
                         </div>
-
-                        <div class="text-left mt-4">
-                            <label for="confirm_password" class="block text-sm font-medium text-gray-900">Ulangi
-                                Password</label>
-                            <input type="password" name="confirm_password" id="confirm_password"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
-                                placeholder="Ulangi Password" required>
-                        </div>
-
                         <div class="flex justify-end">
                             <button type="submit"
                                 class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 font-medium text-sm my-2">
@@ -261,39 +187,31 @@
             </div>
         </div>
 
-        <div class="flex flex-col items-center mt-4">
-            <!-- Help text -->
-            <span class="text-sm text-gray-700 dark:text-gray-400">
-                Showing <span class="font-semibold text-gray-900 dark:text-white">1</span> to <span
-                    class="font-semibold text-gray-900 dark:text-white">10</span> of <span
-                    class="font-semibold text-gray-900 dark:text-white">100</span> Entries
-            </span>
-            <div class="inline-flex mt-2 xs:mt-0">
-                <!-- Buttons -->
-                <button
-                    class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 rounded-s hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                    <svg class="w-3.5 h-3.5 me-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                        fill="none" viewBox="0 0 14 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M13 5H1m0 0 4 4M1 5l4-4" />
-                    </svg>
-                    Prev
-                </button>
-                <button
-                    class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 border-0 border-s border-gray-700 rounded-e hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                    Next
-                    <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                        fill="none" viewBox="0 0 14 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M1 5h12m0 0L9 1m4 4L9 9" />
-                    </svg>
-                </button>
+        <!-- Custom Pagination -->
+        @if ($users->total() > 5)
+            <div class="flex flex-col items-center my-6">
+                <span class="text-sm text-gray-700 dark:text-gray-400">
+                    Menampilkan <span
+                        class="font-semibold text-gray-900 dark:text-white">{{ $users->firstItem() }}</span>
+                    sampai
+                    <span class="font-semibold text-gray-900 dark:text-white">{{ $users->lastItem() }}</span> dari
+                    <span class="font-semibold text-gray-900 dark:text-white">{{ $users->total() }}</span> pengguna
+                </span>
+                <div class="inline-flex mt-2 xs:mt-0">
+                    <button {{ $users->onFirstPage() ? 'disabled' : '' }}
+                        class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 rounded-s hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                        {{ $users->previousPageUrl() ? 'onclick=window.location.href=\'' . $users->previousPageUrl() . '\'' : '' }}>
+                        Sebelumnya
+                    </button>
+                    <button {{ !$users->hasMorePages() ? 'disabled' : '' }}
+                        class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 border-0 border-s border-gray-700 rounded-e hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                        {{ $users->nextPageUrl() ? 'onclick=window.location.href=\'' . $users->nextPageUrl() . '\'' : '' }}>
+                        Selanjutnya
+                    </button>
+                </div>
             </div>
-        </div>
+        @endif
     </div>
-
-
-
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
@@ -310,10 +228,10 @@
             });
         });
 
-        function confirmDelete() {
+        function confirmDelete(id, nama) {
             Swal.fire({
                 title: 'Apakah Anda yakin?',
-                text: "Anda tidak akan dapat mengembalikan teknisi ini!",
+                text: "Anda tidak akan dapat mengembalikan user " + nama,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#d33',

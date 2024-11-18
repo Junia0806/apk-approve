@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-
+use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\DataPresensi;
@@ -56,9 +56,9 @@ class PresensiAdmin extends Controller
                     // Pastikan data dosen tersedia
                     if ($bimbingan->dosen) {
                         return [
-                            'tanggal'   => $tanggal->format('d-m-Y'), // Format tanggal
+                            'tanggal'   => $tanggal->format('d-m-Y'),
                             'hari'      => $bimbingan->hari,
-                            'nama_dosen' => $bimbingan->dosen->nama, // Mengambil nama dosen
+                            'nama_dosen' => $bimbingan->dosen->nama, 
                             'nama'      => $bimbingan->nama,
                             'keperluan' => $bimbingan->keperluan,
                             'status'    => $bimbingan->status,
