@@ -1,19 +1,31 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-
+use App\Models\DataProdi;
+use App\Models\DataKampus;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class ProdiAdmin extends Controller
 {
     // Menampilkan daftar prodi berdasarkan id_kampus
-    public function index($id_kampus)
-    {
-        $prodis = DataProdi::where('id_kampus', $id_kampus)->get();
-        return view('admin.prodi.index', compact('prodis', 'id_kampus'));
-    }
+    // public function index($id_kampus)
+    // {
+    //     $prodis = DataProdi::where('id_kampus', $id_kampus)->get();
+        
+    //     return view('admin.prodi', compact('prodis', 'id_kampus'));
+    // }
 
+    public function index($id_kampus)
+{
+    // Ambil data program studi berdasarkan id_kampus
+    $prodis = DataProdi::where('id_kampus', $id_kampus)->get();
+
+    // Ambil nama kampus berdasarkan id_kampus
+    $kampus = DataKampus::find($id_kampus);
+
+    return view('admin.prodi', compact('prodis', 'id_kampus', 'kampus'));
+}
     // Menambahkan data baru ke tabel data_prodis
     public function store(Request $request, $id_kampus)
     {

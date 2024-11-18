@@ -12,6 +12,9 @@ class PresensiAdmin extends Controller
     // Menampilkan daftar data
     public function index()
     {
+        $presensi = DataPresensi::all();
+        // dd($dosenList); 
+        // Mengirim data dosen ke view
         return view('admin.presensi');
     }
 
@@ -48,19 +51,18 @@ class PresensiAdmin extends Controller
     public function show($tanggal)
     {
         $presensi = DataPresensi::with('dosen') // Memuat relasi dosen
-            ->whereDate('tgl_bimbingan', $tanggal)
+            ->whereDate('tgl_presensi', $tanggal)
             ->get()
             ->map(function ($bimbingan) {
-                    $tanggal = Carbon::parse($bimbingan->tgl_bimbingan); // Pastikan nama kolom benar
+                    $tanggal = Carbon::parse($bimbingan->tgl_presensi); // Pastikan nama kolom benar
 
                     // Pastikan data dosen tersedia
                     if ($bimbingan->dosen) {
                         return [
                             'tanggal'   => $tanggal->format('d-m-Y'),
                             'hari'      => $bimbingan->hari,
-                            'nama_dosen' => $bimbingan->dosen->nama, 
-                            'nama'      => $bimbingan->nama,
-                            'keperluan' => $bimbingan->keperluan,
+                            'id_dosen'      => $bimbingan->dosen->id_dosen,
+                            'nama_dosen' => $bimbingan->dosen->nama_dosen, 
                             'status'    => $bimbingan->status,
                         ];
                     }
@@ -70,7 +72,7 @@ class PresensiAdmin extends Controller
         // Mengembalikan response dalam format JSON
         return response()->json($presensi);
     }
-
+ 
     // Memperbarui data tertentu berdasarkan ID
     public function update(Request $request, $id)
     {
