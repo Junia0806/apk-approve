@@ -125,9 +125,13 @@ Route::get('/admin-pengguna', function () {
     return view('admin.pengguna');
 })->name('admin-pengguna');
 
-Route::get('/admin-sesi', function () {
-    return view('admin.sesi');
-})->name('admin-sesi');
+// Route::get('/admin-sesi', function () {
+//     return view('admin.sesi');
+// })->name('admin-sesi');
+Route::get('/sesi', [SesiAdmin::class, 'index'])->name('adminSesi');
+Route::post('/sesi', [SesiAdmin::class, 'store'])->name('adminSesi.store');
+Route::put('/sesi/{id}', [SesiAdmin::class, 'update'])->name('adminSesi.update');
+Route::delete('/sesi/{id}', [SesiAdmin::class, 'destroy'])->name('adminSesi.destroy');
 
 Route::get('/admin-jadwal', function () {
     return view('admin.jadwal');
