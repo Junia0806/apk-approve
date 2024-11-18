@@ -12,8 +12,13 @@ class UserAdmin extends Controller
     // Menampilkan daftar data
     public function index()
     {
-        $users = User::all(); // Mengambil semua data user
-        return response()->json($users);
+        // $users = User::all(); 
+        $users = User::orderBy('id_user', 'desc')->paginate(5);
+        $totalDosen     = User::where('role', 'dosen')->count();
+        $totalTeknisi   = User::where('role', 'teknisi')->count();
+
+        // return response()->json($users);
+        return view('admin.pengguna', compact('users','totalTeknisi','totalDosen'));
     }
 
     // Menampilkan form untuk membuat data baru
@@ -41,10 +46,7 @@ class UserAdmin extends Controller
             'password' => Hash::make($request->password), // Mengenkripsi password
         ]);
 
-        return response()->json([
-            'message' => 'User berhasil ditambahkan.',
-            'data' => $user
-        ], 201);
+        return redirect()->route('adminPengguna')->with('success', 'Pengguna berhasil ditambahkan.');
     }
 
     // Menampilkan data tertentu berdasarkan ID
@@ -82,6 +84,6 @@ class UserAdmin extends Controller
 
         $user->delete(); // Menghapus data user
 
-        return response()->json(['message' => 'User berhasil dihapus.'], 200);
+        return redirect()->route('adminPengguna')->with('success', 'Pengguna berhasil ditambahkan.');
     }
 }
