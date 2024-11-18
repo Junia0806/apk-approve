@@ -22,31 +22,19 @@ use App\Http\Controllers\Admin\JadwalAdmin;
 use App\Http\Controllers\Admin\PresensiAdmin;
 use App\Http\Controllers\Admin\UserAdmin;
 use App\Http\Controllers\Admin\SesiAdmin;
+use App\Http\Controllers\Admin\ProdiAdmin;
 
 
 // KONFIGURASI INTEGRASI TERLINDUNGI MIDDLEWARE (JANGAN DIPAKE DULU YA!)
 // Route::prefix('/')->group(function () {
-//     Route::resource('cek-sesi', CekSesi::class);
-//     Route::resource('jadwal', JadwalGuest::class);
-//     Route::resource('pengajuan', PengajuanGuest::class);
+
 // });
 
 // Route::prefix('dosen')->middleware('auth')->group(function () {
-//     Route::resource('dashboard', DashboardDosen::class);
-//     Route::resource('presensi', PresensiDosen::class);
-//     Route::resource('bimbingan', BimbinganDosen::class);
+
 // });
 
 Route::prefix('admin')->group(function () {
-    Route::resource('dashboard', DashboardAdmin::class);
-    Route::resource('kampus', KampusAdmin::class);
-    Route::resource('dosen', DosenAdmin::class);
-    Route::resource('matkul', MatkulAdmin::class);
-    Route::resource('bimbingan', BimbinganAdmin::class);
-    Route::resource('jadwal', JadwalAdmin::class);
-    Route::resource('presensi', PresensiAdmin::class);
-    Route::resource('user', UserAdmin::class);
-    Route::resource('sesi', SesiAdmin::class);
 
     // Route::get('/bimbingan/getData/{$1}', [BimbinganAdmin::class, 'getBimbinganByDosen']);
 });
@@ -105,6 +93,12 @@ Route::get('/admin-prodi', function () {
     return view('admin.prodi');
 })->name('admin-prodi');
 
+Route::get('/admin/prodi/{id_kampus}', [ProdiAdmin::class, 'index'])->name('admin-prodi');
+Route::post('/adminProdi/{id_kampus}', [ProdiAdmin::class, 'store'])->name('adminProdi.store');
+Route::delete('/admin/prodi/{id_kampus}/{id_Prodi}', [ProdiAdmin::class, 'destroy'])->name('adminProdi.destroy');
+Route::put('/Prodi/update/{id_kampus}/{id_Prodi}', [ProdiAdmin::class, 'update'])->name('adminProdi.update');
+
+
 Route::get('/admin/dosen', [DosenAdmin::class, 'index'])->name('admin-dosen');
 Route::post('/adminDosen', [DosenAdmin::class, 'store'])->name('adminDosen.store');
 Route::delete('/admin/dosen/{id_Dosen}', [DosenAdmin::class, 'destroy'])->name('adminDosen.destroy');
@@ -125,13 +119,9 @@ Route::get('/admin-pengguna', function () {
     return view('admin.pengguna');
 })->name('admin-pengguna');
 
-// Route::get('/admin-sesi', function () {
-//     return view('admin.sesi');
-// })->name('admin-sesi');
-Route::get('/sesi', [SesiAdmin::class, 'index'])->name('adminSesi');
-Route::post('/sesi', [SesiAdmin::class, 'store'])->name('adminSesi.store');
-Route::put('/sesi/{id}', [SesiAdmin::class, 'update'])->name('adminSesi.update');
-Route::delete('/sesi/{id}', [SesiAdmin::class, 'destroy'])->name('adminSesi.destroy');
+Route::get('/admin-sesi', function () {
+    return view('admin.sesi');
+})->name('admin-sesi');
 
 Route::get('/admin-jadwal', function () {
     return view('admin.jadwal');
