@@ -91,7 +91,12 @@ Route::put('/kampus/update/{id_kampus}', [kampusAdmin::class, 'update'])->name('
 
 
 Route::get('/admin/bimbingan', [BimbinganAdmin::class, 'index'])->name('adminBimbingan');
+Route::get('/admin/bimbingan/{id}', [BimbinganAdmin::class, 'show'])->name('adminBimbingan.show');
+Route::put('/admin/bimbingan/{id}', [BimbinganAdmin::class, 'update'])->name('adminBimbingan.update');
+
+
 Route::get('/presensi/{tanggal}', [PresensiAdmin::class, 'show'])->name('presensi.show');
+Route::put('/presensi/{id}', [PresensiAdmin::class, 'update'])->name('presensi.update');
 Route::get('/presensi', [PresensiAdmin::class, 'index'])->name('adminPresensi');
 
 Route::get('/admin/prodi/{id_kampus}', [ProdiAdmin::class, 'index'])->name('admin-prodi');
