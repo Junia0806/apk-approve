@@ -36,7 +36,7 @@ use App\Http\Controllers\Admin\ProdiAdmin;
 
 Route::prefix('admin')->group(function () {
 
-    // Route::get('/bimbingan/getData/{$1}', [BimbinganAdmin::class, 'getBimbinganByDosen']);
+    Route::get('/bimbingan/getData/{$1}', [BimbinganAdmin::class, 'getBimbinganByDosen']);
 });
 
 
@@ -89,9 +89,15 @@ Route::post('/adminKampus', [kampusAdmin::class, 'store'])->name('adminKampus.st
 Route::delete('/admin/kampus/{id_kampus}', [kampusAdmin::class, 'destroy'])->name('adminKampus.destroy');
 Route::put('/kampus/update/{id_kampus}', [kampusAdmin::class, 'update'])->name('adminKampus.update');
 
-Route::get('/admin-prodi', function () {
-    return view('admin.prodi');
-})->name('admin-prodi');
+
+Route::get('/admin/bimbingan', [BimbinganAdmin::class, 'index'])->name('adminBimbingan');
+Route::get('/admin/bimbingan/{id}', [BimbinganAdmin::class, 'show'])->name('adminBimbingan.show');
+Route::put('/admin/bimbingan/{id}', [BimbinganAdmin::class, 'update'])->name('adminBimbingan.update');
+
+
+Route::get('/presensi/{tanggal}', [PresensiAdmin::class, 'show'])->name('presensi.show');
+Route::put('/presensi/{id}', [PresensiAdmin::class, 'update'])->name('presensi.update');
+Route::get('/presensi', [PresensiAdmin::class, 'index'])->name('adminPresensi');
 
 Route::get('/admin/prodi/{id_kampus}', [ProdiAdmin::class, 'index'])->name('admin-prodi');
 Route::post('/adminProdi/{id_kampus}', [ProdiAdmin::class, 'store'])->name('adminProdi.store');
@@ -109,13 +115,6 @@ Route::post('/adminmatkul', [matkulAdmin::class, 'store'])->name('adminmatkul.st
 Route::delete('/admin/matkul/{id_matkul}', [matkulAdmin::class, 'destroy'])->name('adminmatkul.destroy');
 Route::put('/matkul/update/{id_matkul}', [matkulAdmin::class, 'update'])->name('adminmatkul.update');
 
-Route::get('/admin-bimbingan', function () {
-    return view('admin.bimbingan');
-})->name('admin-bimbingan');
-
-Route::get('/admin-presensi', function () {
-    return view('admin.presensi');
-})->name('admin-presensi');
 Route::get('/pengguna', [UserAdmin::class, 'index'])->name('adminPengguna');
 Route::post('/pengguna', [UserAdmin::class, 'store'])->name('adminPengguna.store');
 Route::get('/pengguna/{id}', [UserAdmin::class, 'show'])->name('adminPengguna.show');
@@ -123,9 +122,10 @@ Route::put('/pengguna/{id}', [UserAdmin::class, 'update'])->name('adminPengguna.
 Route::delete('/pengguna/{id}', [UserAdmin::class, 'destroy'])->name('adminPengguna.destroy');
 
 
-Route::get('/admin-sesi', function () {
-    return view('admin.sesi');
-})->name('admin-sesi');
+Route::get('/sesi', [SesiAdmin::class, 'index'])->name('adminSesi');
+Route::post('/sesi', [SesiAdmin::class, 'store'])->name('adminSesi.store');
+Route::put('/sesi/{id}', [SesiAdmin::class, 'update'])->name('adminSesi.update');
+Route::delete('/sesi/{id}', [SesiAdmin::class, 'destroy'])->name('adminSesi.destroy');
 
 Route::get('/admin-jadwal', function () {
     return view('admin.jadwal');

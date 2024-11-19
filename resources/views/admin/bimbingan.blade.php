@@ -45,69 +45,6 @@
                     </table>
 
                     <!-- Modal Edit Approval -->
-                    {{-- <div id="edit-approval-modal" tabindex="-1" aria-hidden="true"
-                        class="fixed inset-0 z-50 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto h-modal hidden">
-                        <div class="relative w-full max-w-md h-full max-h-full md:h-auto">
-                            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                                <button type="button"
-                                    class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:text-gray-500 dark:hover:bg-gray-600 dark:hover:text-white"
-                                    data-modal-hide="#edit-approval-modal">
-                                    <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M6 18L18 6M6 6l12 12"></path>
-                                    </svg>
-                                    <span class="sr-only">Close modal</span>
-                                </button>
-                                <div class="p-6 text-center">
-                                    <h3 class="text-lg font-semibold text-gray-900">Edit Status Approval</h3>
-                                    <form action="/" method="POST" class="space-y-4">
-                                        @csrf
-                                        @method('PUT')
-                                        <div class="text-left">
-                                            <label class="block text-sm font-medium text-gray-900">Tanggal</label>
-                                            <p>11 November 2024</p>
-                                        </div>
-                                        <div class="text-left mt-4">
-                                            <label class="block text-sm font-medium text-gray-900">Hari</label>
-                                            <p>Senin</p>
-                                        </div>
-                                        <div class="text-left mt-4">
-                                            <label class="block text-sm font-medium text-gray-900">Jam</label>
-                                            <p>10:00 - 11:00</p>
-                                        </div>
-                                        <div class="text-left mt-4">
-                                            <label class="block text-sm font-medium text-gray-900">Nama
-                                                Mahasiswa</label>
-                                            <p>Ahmad Syarif</p>
-                                        </div>
-                                        <div class="text-left mt-4">
-                                            <label class="block text-sm font-medium text-gray-900">Keperluan</label>
-                                            <p>Penyusunan Bab II</p>
-                                        </div>
-                                        <div class="text-left mt-4">
-                                            <label class="block text-sm font-medium text-gray-900">Status
-                                                Approval</label>
-                                            <select name="status_approval"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
-                                                required>
-                                                <option>Disetujui</option>
-                                                <option>Tidak Disetujui</option>
-                                            </select>
-                                        </div>
-                                        <div class="flex justify-end mt-4">
-                                            <button type="submit"
-                                                class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 font-medium text-sm">
-                                                Simpan
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div> --}}
-
-                    <!-- Modal Edit Approval -->
                     <div id="edit-approval-modal" tabindex="-1" aria-hidden="true"
                         class="fixed inset-0 z-50 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto h-modal hidden">
                         <div class="relative w-full max-w-md h-full max-h-full md:h-auto">

@@ -51,7 +51,7 @@
                                 <td class="p-2">{{ $item->nama_kampus }}</td>
                                 <td class="p-2">{{ $item->alamat }}</td>
                                 <td class="p-2">
-                                    <a href="#"
+                                    <a href="{{ url('/admin/prodi/' . $item->id_kampus) }}"
                                         class="inline-block px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
                                         Detail
                                     </a>

@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\DataDosen;
+
 
 class DataPresensi extends Model
 {
@@ -28,7 +30,11 @@ class DataPresensi extends Model
         'hari',
         'status',
     ];
-
+    public function dosen()
+    {
+        return $this->belongsTo(DataDosen::class, 'id_dosen', 'id_dosen');
+    }
+    
     // Mengatur timestamps, jika true maka otomatis mengisi created_at dan updated_at
     public $timestamps = true;
 }
