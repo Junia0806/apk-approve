@@ -8,13 +8,33 @@ use App\Models\DataDosen;
 
 class DosenAdmin extends Controller
 {
-    // Menampilkan daftar data
-    public function index()
+  
+    public function index(Request $request)
     {
-        $dosen = DataDosen::orderBy('id_dosen', 'desc')->paginate(5);
+        $search = $request->input('search');
+    
+        $dosenQuery = DataDosen::query()
+            ->when($search, function ($query) use ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('kd_dosen', 'like', '%' . $search . '%')
+                        ->orWhere('nama_dosen', 'like', '%' . $search . '%')
+                        ->orWhere('NIP', 'like', '%' . $search . '%')
+                        ->orWhere('no_hp', 'like', '%' . $search . '%');
+                });
+            })
+            ->orderBy('id_dosen', 'desc');
+    
+        // Logika untuk menentukan apakah menggunakan pagination atau tidak
+        if ($search) {
+            $dosen = $dosenQuery->get(); // Ambil semua data tanpa pagination
+        } else {
+            $dosen = $dosenQuery->paginate(5); // Gunakan pagination jika tidak ada search
+        }
+    
         return view('admin.dosen', compact('dosen'));
     }
-
+    
+    
     // Menampilkan form untuk membuat data baru
     public function create()
     {
@@ -24,23 +44,25 @@ class DosenAdmin extends Controller
     // Menyimpan data baru
     public function store(Request $request)
     {
+        // Validasi data yang diterima dari request
         $request->validate([
             'kd_dosen' => 'required|string',
-            'NIP' => 'required|string',
+            'NIP' => 'required|string|unique:data_dosens,NIP',  // Memastikan NIP tidak duplikat di tabel dosen
             'nama_dosen' => 'required|string',
             'no_hp' => 'required|string',
         ]);
-
+    
+        // Membuat dosen baru dan menyimpan data
         $dosen = DataDosen::create([
             'kd_dosen' => $request->kd_dosen,
             'NIP' => $request->NIP,
             'nama_dosen' => $request->nama_dosen,
             'no_hp' => $request->no_hp,
         ]);
-
+    
         return redirect()->route('admin-dosen')->with('success', 'Dosen berhasil ditambahkan.');
     }
-
+    
     // Menampilkan data tertentu berdasarkan ID
     public function show($id)
     {
@@ -70,7 +92,7 @@ class DosenAdmin extends Controller
     {
         $request->validate([
             'kd_dosen' => 'required|string',
-            'NIP' => 'required|string',
+            'NIP' => 'required|string|unique:dosen,NIP',
             'nama_dosen' => 'required|string',
             'no_hp' => 'required|string',
         ]);

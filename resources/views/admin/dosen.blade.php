@@ -12,9 +12,8 @@
     </div>
     <div class="overflow-x-auto">
 
-        <form class="max-w-md mx-auto my-4">
-            <label for="default-search"
-                class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+        <form class="max-w-md mx-auto my-4" method="GET" action="{{ route('admin-dosen') }}">
+            <label for="search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
             <div class="relative">
                 <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                     <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
@@ -23,14 +22,13 @@
                             d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                     </svg>
                 </div>
-                <input type="search" id="default-search"
+                <input type="search" id="search" name="search"
                     class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Temukan dosen disini..." required />
+                    placeholder="Temukan dosen disini..." value="{{ request('search') }}" />
                 <button type="submit"
                     class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
             </div>
         </form>
-
         <!-- Tabel Dosen -->
         <div class="overflow-x-auto">
             <table class="w-full border-separate border-spacing-0 text-sm text-black">
@@ -44,98 +42,115 @@
                     </tr>
                 </thead>
                 <tbody class="bg-white text-center" id="dosenTableBody">
-                    @foreach ($dosen as $index => $item)
-                        <tr class="border-b border-gray-200">
-                            <td class="p-2">{{ $item->kd_dosen }}</td>
-                            <td class="p-2">{{ $item->NIP }}</td>
-                            <td class="p-2">{{ $item->nama_dosen }}</td>
-                            <td class="p-2">{{ $item->no_hp }}</td>
-                            <td class="p-2">
-                                <button type="button" data-modal-target="#edit-item-modal-{{ $item->id_dosen }}"
-                                    class="inline-flex items-center justify-center w-8 h-8 text-gray-800 bg-gray-200 border border-gray-300 rounded-sm shadow-sm hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500">
-                                    <i class="fa-regular fa-pen-to-square text-lg"></i>
-                                </button>
-                                <form id="delete-form-{{ $item->id_dosen }}"
-                                    action="{{ route('adminDosen.destroy', $item->id_dosen) }}" method="POST"
-                                    class="inline-block">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="button"
-                                        class="inline-flex items-center justify-center w-8 h-8 text-white bg-red-700 border border-red-600 rounded shadow-sm hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 ml-1"
-                                        onclick="confirmDelete('{{ $item->id_dosen }}', '{{ $item->nama_dosen }}')">
-                                        <i class="fa-regular fa-trash-can text-base"></i>
+                    @if ($dosen->isEmpty())
+                    <tr>
+                        <td colspan="5" class="p-6">
+                            <div class="flex flex-col items-center justify-center">
+                                <img src="{{ asset('asset/404.gif') }}" alt="Not Found" class="w-64 h-64 mb-4">
+                                <p class="text-center text-gray-600 text-lg font-semibold">
+                                    Dosen "{{ request('search') }}" tidak ditemukan.
+                                </p>
+                                <p class="mt-2 text-center text-gray-500 text-md">
+                                    Silakan periksa kembali kata kunci pencarian Anda atau coba gunakan istilah lain.
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    
+                    @else
+                        @foreach ($dosen as $index => $item)
+                            <tr class="border-b border-gray-200">
+                                <td class="p-2">{{ $item->kd_dosen }}</td>
+                                <td class="p-2">{{ $item->NIP }}</td>
+                                <td class="p-2">{{ $item->nama_dosen }}</td>
+                                <td class="p-2">{{ $item->no_hp }}</td>
+                                <td class="p-2">
+                                    <button type="button" data-modal-target="#edit-item-modal-{{ $item->id_dosen }}"
+                                        class="inline-flex items-center justify-center w-8 h-8 text-gray-800 bg-gray-200 border border-gray-300 rounded-sm shadow-sm hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500">
+                                        <i class="fa-regular fa-pen-to-square text-lg"></i>
                                     </button>
-                                </form>
-                            </td>
-                        </tr>
-                        <!-- Modal Edit Dosen -->
-                        <div id="edit-item-modal-{{ $item->id_dosen }}" tabindex="-1" aria-hidden="true"
-                            class="fixed inset-0 z-50 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto h-modal hidden">
-                            <div class="relative w-full max-w-full md:max-w-md h-full max-h-full md:h-auto">
-                                <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                                    <button type="button"
-                                        class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:text-gray-500 dark:hover:bg-gray-600 dark:hover:text-white"
-                                        data-modal-hide="#edit-item-modal-{{ $item->id_dosen }}">
-                                        <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M6 18L18 6M6 6l12 12"></path>
-                                        </svg>
-                                        <span class="sr-only">Close modal</span>
-                                    </button>
-                                    <div class="p-6 text-center">
-                                        <h3 class="text-lg font-semibold text-gray-900">Edit Dosen</h3>
-                                        <form action="{{ route('adminDosen.update', $item->id_dosen) }}" method="POST"
-                                            class="space-y-4">
-                                            @csrf
-                                            @method('PUT')
-                                            <div class="text-left mt-">
-                                                <label for="kd_dosen"
-                                                    class="block text-sm font-medium text-gray-900">Kode
-                                                    Dosen</label>
-                                                <input type="text" name="kd_dosen" id="kd_dosen"
-                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
-                                                    value="{{ $item->kd_dosen }}">
-                                            </div>
-                                            <div class="text-left mt-4">
-                                                <label for="nama_dosen"
-                                                    class="block text-sm font-medium text-gray-900">Nama
-                                                    Dosen</label>
-                                                <input type="text" name="nama_dosen" id="nama_dosen"
-                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
-                                                    value="{{ $item->nama_dosen }}">
-                                            </div>
+                                    <form id="delete-form-{{ $item->id_dosen }}"
+                                        action="{{ route('adminDosen.destroy', $item->id_dosen) }}" method="POST"
+                                        class="inline-block">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button"
+                                            class="inline-flex items-center justify-center w-8 h-8 text-white bg-red-700 border border-red-600 rounded shadow-sm hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 ml-1"
+                                            onclick="confirmDelete('{{ $item->id_dosen }}', '{{ $item->nama_dosen }}')">
+                                            <i class="fa-regular fa-trash-can text-base"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <!-- Modal Edit Dosen -->
+                            <div id="edit-item-modal-{{ $item->id_dosen }}" tabindex="-1" aria-hidden="true"
+                                class="fixed inset-0 z-50 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto h-modal hidden">
+                                <div class="relative w-full max-w-full md:max-w-md h-full max-h-full md:h-auto">
+                                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                        <button type="button"
+                                            class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:text-gray-500 dark:hover:bg-gray-600 dark:hover:text-white"
+                                            data-modal-hide="#edit-item-modal-{{ $item->id_dosen }}">
+                                            <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M6 18L18 6M6 6l12 12"></path>
+                                            </svg>
+                                            <span class="sr-only">Close modal</span>
+                                        </button>
+                                        <div class="p-6 text-center">
+                                            <h3 class="text-lg font-semibold text-gray-900">Edit Dosen</h3>
+                                            <form action="{{ route('adminDosen.update', $item->id_dosen) }}"
+                                                method="POST" class="space-y-4">
+                                                @csrf
+                                                @method('PUT')
+                                                <div class="text-left mt-">
+                                                    <label for="kd_dosen"
+                                                        class="block text-sm font-medium text-gray-900">Kode
+                                                        Dosen</label>
+                                                    <input type="text" name="kd_dosen" id="kd_dosen"
+                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
+                                                        value="{{ $item->kd_dosen }}">
+                                                </div>
+                                                <div class="text-left mt-4">
+                                                    <label for="nama_dosen"
+                                                        class="block text-sm font-medium text-gray-900">Nama
+                                                        Dosen</label>
+                                                    <input type="text" name="nama_dosen" id="nama_dosen"
+                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
+                                                        value="{{ $item->nama_dosen }}">
+                                                </div>
 
-                                            <div class="text-left mt-4">
-                                                <label for="NIP"
-                                                    class="block text-sm font-medium text-gray-900">NIP</label>
-                                                <input type="text" name="NIP" id="NIP"
-                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
-                                                    value="{{ $item->NIP }}">
-                                            </div>
-                                            <div class="text-left mt-4">
-                                                <label for="no_hp"
-                                                    class="block text-sm font-medium text-gray-900">Nomor
-                                                    Handphone</label>
-                                                <input type="tel" name="no_hp" id="no_hp"
-                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
-                                                    value="{{ $item->no_hp }}">
-                                            </div>
+                                                <div class="text-left mt-4">
+                                                    <label for="NIP"
+                                                        class="block text-sm font-medium text-gray-900">NIP</label>
+                                                    <input type="text" name="NIP" id="NIP"
+                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
+                                                        value="{{ $item->NIP }}">
+                                                </div>
+                                                <div class="text-left mt-4">
+                                                    <label for="no_hp"
+                                                        class="block text-sm font-medium text-gray-900">Nomor
+                                                        Handphone</label>
+                                                    <input type="tel" name="no_hp" id="no_hp"
+                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
+                                                        value="{{ $item->no_hp }}">
+                                                </div>
 
-                                            <div class="flex justify-end">
-                                                <button type="submit"
-                                                    class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 font-medium text-sm my-2">
-                                                    Simpan
-                                                </button>
-                                            </div>
-                                        </form>
+                                                <div class="flex justify-end">
+                                                    <button type="submit"
+                                                        class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 font-medium text-sm my-2">
+                                                        Simpan
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
                 </tbody>
-
+                @endif
             </table>
         </div>
     </div>
@@ -195,30 +210,29 @@
             </div>
         </div>
     </div>
-   <!-- Custom Pagination -->
-   @if ($dosen->total() > 5)
-   <div class="flex flex-col items-center my-6">
-       <span class="text-sm text-gray-700 dark:text-gray-400">
-           Menampilkan <span
-               class="font-semibold text-gray-900 dark:text-white">{{ $dosen->firstItem() }}</span>
-           sampai
-           <span class="font-semibold text-gray-900 dark:text-white">{{ $dosen->lastItem() }}</span> dari <span
-               class="font-semibold text-gray-900 dark:text-white">{{ $dosen->total() }}</span> dosen
-       </span>
-       <div class="inline-flex mt-2 xs:mt-0">
-           <button {{ $dosen->onFirstPage() ? 'disabled' : '' }}
-               class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 rounded-s hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-               {{ $dosen->previousPageUrl() ? 'onclick=window.location.href=\'' . $dosen->previousPageUrl() . '\'' : '' }}>
-               Sebelumnya
-           </button>
-           <button {{ !$dosen->hasMorePages() ? 'disabled' : '' }}
-               class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 border-0 border-s border-gray-700 rounded-e hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-               {{ $dosen->nextPageUrl() ? 'onclick=window.location.href=\'' . $dosen->nextPageUrl() . '\'' : '' }}>
-               Selanjutnya
-           </button>
-       </div>
-   </div>
-@endif
+    <!-- Custom Pagination -->
+    @if (!request('search'))
+        <div class="flex flex-col items-center my-6">
+            <span class="text-sm text-gray-700 dark:text-gray-400">
+                Menampilkan <span class="font-semibold text-gray-900 dark:text-white">{{ $dosen->firstItem() }}</span>
+                sampai
+                <span class="font-semibold text-gray-900 dark:text-white">{{ $dosen->lastItem() }}</span> dari <span
+                    class="font-semibold text-gray-900 dark:text-white">{{ $dosen->total() }}</span> dosen
+            </span>
+            <div class="inline-flex mt-2 xs:mt-0">
+                <button {{ $dosen->onFirstPage() ? 'disabled' : '' }}
+                    class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 rounded-s hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                    {{ $dosen->previousPageUrl() ? 'onclick=window.location.href=\'' . $dosen->previousPageUrl() . '\'' : '' }}>
+                    Sebelumnya
+                </button>
+                <button {{ !$dosen->hasMorePages() ? 'disabled' : '' }}
+                    class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 border-0 border-s border-gray-700 rounded-e hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                    {{ $dosen->nextPageUrl() ? 'onclick=window.location.href=\'' . $dosen->nextPageUrl() . '\'' : '' }}>
+                    Selanjutnya
+                </button>
+            </div>
+        </div>
+    @endif
 </div>
 
 
@@ -238,7 +252,16 @@
             document.querySelector(modalId).classList.add('hidden');
         });
     });
-
+    document.addEventListener('DOMContentLoaded', function() {
+            @if ($errors->has('NIP'))
+                Swal.fire({
+                    title: 'Peringatan!',
+                    text: 'NIP (Nomor Induk Pegawai) sudah digunakan, gunakan NIP yang lain.',
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                });
+            @endif
+        });
     function confirmDelete(id, namaDosen) {
         Swal.fire({
             title: 'Apakah Anda yakin?',

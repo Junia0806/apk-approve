@@ -10,15 +10,30 @@ use Illuminate\Support\Facades\Hash; // Untuk hashing password
 class UserAdmin extends Controller
 {
     // Menampilkan daftar data
-    public function index()
+    public function index(Request $request)
     {
-        // $users = User::all(); 
-        $users = User::orderBy('id_user', 'desc')->paginate(5);
+        $search = $request->input('search');
+        $usersQuery =  User::query()
+            ->when($search, function ($query) use ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('username', 'like', '%' . $search . '%')
+                        ->orWhere('email', 'like', '%' . $search . '%')
+                        ->orWhere('role', 'like', '%' . $search . '%');
+                });
+            })
+            ->orderBy('id_user', 'desc');
+
+        if ($search) {
+            $users = $usersQuery->get(); 
+        } else {
+            $users = $usersQuery->paginate(5); 
+        }
+        // $users = User::orderBy('id_user', 'desc')->paginate(5);
         $totalDosen     = User::where('role', 'dosen')->count();
         $totalTeknisi   = User::where('role', 'teknisi')->count();
 
         // return response()->json($users);
-        return view('admin.pengguna', compact('users','totalTeknisi','totalDosen'));
+        return view('admin.pengguna', compact('users', 'totalTeknisi', 'totalDosen'));
     }
 
     // Menampilkan form untuk membuat data baru
@@ -74,16 +89,20 @@ class UserAdmin extends Controller
     }
 
     // Menghapus data tertentu berdasarkan ID
-    public function destroy($id)
+    public function destroy($id_user)
     {
-        $user = User::find($id); // Mencari user berdasarkan ID
+        // Mencari user berdasarkan ID
+        $user = User::find($id_user);
 
+        // Jika user tidak ditemukan
         if (!$user) {
             return response()->json(['message' => 'User tidak ditemukan'], 404);
         }
 
-        $user->delete(); // Menghapus data user
+        // Menghapus data user
+        $user->delete();
 
-        return redirect()->route('adminPengguna')->with('success', 'Pengguna berhasil ditambahkan.');
+        // Redirect tanpa pesan
+        return redirect()->route('adminPengguna');
     }
 }

@@ -13,8 +13,8 @@
         </div>
         <div class="overflow-x-auto">
 
-            <form class="max-w-md mx-auto my-4">
-                <label for="default-search"
+            <form class="max-w-md mx-auto my-4" method="GET" action="{{ route('admin-kampus') }}">
+                <label for="search"
                     class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
                 <div class="relative">
                     <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -24,14 +24,14 @@
                                 d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                         </svg>
                     </div>
-                    <input type="search" id="default-search"
+                    <input type="search" id="search" name="search"
                         class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Temukan Kampus disini..." required />
+                        placeholder="Temukan Kampus disini..." value="{{ request('search') }}" />
                     <button type="submit"
                         class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
                 </div>
             </form>
-
+            
             <!-- Tabel Kampus -->
             <div class="overflow-x-auto">
                 <table class="w-full border-separate border-spacing-0 text-sm text-black">
@@ -45,6 +45,22 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white text-center" id="dosenTableBody">
+                        @if ($kampus->isEmpty())
+                        <tr>
+                            <td colspan="5" class="p-6">
+                                <div class="flex flex-col items-center justify-center">
+                                    <img src="{{ asset('asset/404.gif') }}" alt="Not Found" class="w-64 h-64 mb-4">
+                                    <p class="text-center text-gray-600 text-lg font-semibold">
+                                       Kampus "{{ request('search') }}" tidak ditemukan.
+                                    </p>
+                                    <p class="mt-2 text-center text-gray-500 text-md">
+                                        Silakan periksa kembali kata kunci pencarian Anda atau coba gunakan istilah
+                                        lain.
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+                    @else
                         @foreach ($kampus as $index => $item)
                             <tr class="border-b border-gray-200">
                                 <td class="p-2">{{ $item->kd_kampus }}</td>
@@ -134,6 +150,7 @@
                             </div>
                         @endforeach
                     </tbody>
+                    @endif
                 </table>
             </div>
         </div>
@@ -156,7 +173,7 @@
                             <span class="sr-only">Close modal</span>
                         </button>
                     </div>
-                    <form action="" method="POST" class="p-4">
+                    <form action="{{ route('adminKampus.store') }}"method="POST" class="p-4">
                         @csrf
                         <div class="text-left">
                             <label for="kd_kampus" class="block text-sm font-medium text-gray-900">Kode
@@ -189,7 +206,7 @@
             </div>
         </div>
         <!-- Custom Pagination -->
-        @if ($kampus->total() > 5)
+        @if (!request('search'))
             <div class="flex flex-col items-center my-6">
                 <span class="text-sm text-gray-700 dark:text-gray-400">
                     Menampilkan <span

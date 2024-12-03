@@ -8,15 +8,32 @@ use App\Models\DataMatkul; // Asumsi menggunakan model DataMatkul
 
 class MatkulAdmin extends Controller
 {
-    // Menampilkan daftar data
-    public function index()
+
+    public function index(Request $request)
     {
-        $matkuls = DataMatkul::all(); // Mengambil semua data matkul
-        // return response()->json($matkuls);
-        $matkuls = DataMatkul::orderBy('id_matkul', 'desc')->paginate(5);
+        $search = $request->input('search');
+    
+        $matkulsQuery =  DataMatkul::query()
+            ->when($search, function ($query) use ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('kd_matkul', 'like', '%' . $search . '%')
+                        ->orWhere('matkul', 'like', '%' . $search . '%')
+                        ->orWhere('sks', 'like', '%' . $search . '%')
+                        ->orWhere('semester', 'like', '%' . $search . '%');
+                });
+            })
+            ->orderBy('id_matkul', 'desc');
+    
+        // Logika untuk menentukan apakah menggunakan pagination atau tidak
+        if ($search) {
+            $matkuls = $matkulsQuery->get(); // Ambil semua data tanpa pagination
+        } else {
+            $matkuls = $matkulsQuery->paginate(5); // Gunakan pagination jika tidak ada search
+        }
+    
         return view('admin.mataKuliah', compact('matkuls'));
     }
-
+    
     // Menampilkan form untuk membuat data baru
     public function create()
     {

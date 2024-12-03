@@ -9,12 +9,26 @@ use App\Models\DataKampus;
 class KampusAdmin extends Controller
 {
     // Menampilkan daftar data
-    public function index()
+    public function index(Request $request)
     {
-        $kampus = DataKampus::orderBy('id_kampus', 'desc')->paginate(5);
+        $search = $request->input('search');
+        $kampus = DataKampus::query()
+            ->when($search, function ($query) use ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('kd_kampus', 'like', '%' . $search . '%')
+                        ->orWhere('nama_kampus', 'like', '%' . $search . '%')
+                        ->orWhere('alamat', 'like', '%' . $search . '%');
+                });
+            })
+            ->orderBy('id_kampus', 'desc');
+            if ($search) {
+                $kampus = $kampus->get(); // Ambil semua data tanpa pagination
+            } else {
+                $kampus = $kampus->paginate(5); // Gunakan pagination jika tidak ada search
+            }
         return view('admin.kampus', compact('kampus'));
     }
-
+    
     // Menampilkan form untuk membuat data baru
     public function create()
     {
@@ -36,7 +50,7 @@ class KampusAdmin extends Controller
             'alamat' => $request->alamat,
         ]);
 
-        return redirect()->route('admin-kampus')->with('success', 'Kampus berhasil ditambahkan.');
+        return redirect()->back()->with('success', 'Kampus berhasil ditambahkan.');
     }
 
     // Menampilkan data tertentu berdasarkan ID

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
 use App\Models\DataProdi;
 use App\Models\DataKampus;
 use App\Http\Controllers\Controller;
@@ -8,24 +9,39 @@ use Illuminate\Http\Request;
 
 class ProdiAdmin extends Controller
 {
-    // Menampilkan daftar prodi berdasarkan id_kampus
+
     // public function index($id_kampus)
     // {
+    //     // Ambil data program studi berdasarkan id_kampus
     //     $prodis = DataProdi::where('id_kampus', $id_kampus)->get();
-        
-    //     return view('admin.prodi', compact('prodis', 'id_kampus'));
+
+    //     // Ambil nama kampus berdasarkan id_kampus
+    //     $kampus = DataKampus::find($id_kampus);
+
+    //     return view('admin.prodi', compact('prodis', 'id_kampus', 'kampus'));
     // }
+    public function index(Request $request, $id_kampus)
+    {
+        // Ambil input pencarian dari user
+        $search = $request->input('search');
 
-    public function index($id_kampus)
-{
-    // Ambil data program studi berdasarkan id_kampus
-    $prodis = DataProdi::where('id_kampus', $id_kampus)->get();
+        // Ambil data program studi berdasarkan id_kampus dan kondisi pencarian
+        $prodis = DataProdi::where('id_kampus', $id_kampus)
+            ->when($search, function ($query) use ($search) {
+                $query->where('prodi', 'like', '%' . $search . '%')
+                    ->orWhere('jurusan', 'like', '%' . $search . '%')
+                    ->orWhere('kampus', 'like', '%' . $search . '%')
+                    ->orWhere('kd_prodi', 'like', '%' . $search . '%');
+            })
+            ->get(); // Ambil semua data tanpa pagination (bisa ditambahkan pagination jika diperlukan)
 
-    // Ambil nama kampus berdasarkan id_kampus
-    $kampus = DataKampus::find($id_kampus);
+        // Ambil nama kampus berdasarkan id_kampus
+        $kampus = DataKampus::find($id_kampus);
 
-    return view('admin.prodi', compact('prodis', 'id_kampus', 'kampus'));
-}
+        // Kirim data ke view
+        return view('admin.prodi', compact('prodis', 'id_kampus', 'kampus'));
+    }
+
     // Menambahkan data baru ke tabel data_prodis
     public function store(Request $request, $id_kampus)
     {

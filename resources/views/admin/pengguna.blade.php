@@ -33,48 +33,21 @@
 
         <div class="overflow-x-auto">
             <div class="flex justify-between items-center my-8">
-                <!-- Filter Form -->
-                <form class="flex items-center w-2/3">
-                    <div class="flex w-full">
-                        <label for="search-dropdown"
-                            class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Your Email</label>
-                        <button id="dropdown-button" data-dropdown-toggle="dropdown"
-                            class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600"
-                            type="button">Pilih role
-                            <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 10 6">
+                <form class="flex items-center w-2/3" method="GET" action="{{ route('adminPengguna') }}">
+                    <label for="search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+                    <div class="relative w-full">
+                        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="m1 1 4 4 4-4" />
+                                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                             </svg>
-                        </button>
-                        <div id="dropdown"
-                            class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-                            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdown-button">
-                                <li>
-                                    <button type="button"
-                                        class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dosen</button>
-                                </li>
-                                <li>
-                                    <button type="button"
-                                        class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Teknisi</button>
-                                </li>
-                             
-                            </ul>
                         </div>
-                        <div class="relative w-full">
-                            <input type="search" id="search-dropdown"
-                                class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
-                                placeholder="Temukan Pengguna Disini..." required />
-                            <button type="submit"
-                                class="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 rounded-e-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                    viewBox="0 0 20 20">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                                </svg>
-                                <span class="sr-only">Search</span>
-                            </button>
-                        </div>
+                        <input type="search" id="search" name="search"
+                            class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            placeholder="Temukan pengguna disini..." value="{{ request('search') }}" />
+                        <button type="submit"
+                            class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
                     </div>
                 </form>
 
@@ -98,6 +71,22 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white text-center" id="dosenTableBody">
+                        @if ($users->isEmpty())
+                        <tr>
+                            <td colspan="5" class="p-6">
+                                <div class="flex flex-col items-center justify-center">
+                                    <img src="{{ asset('asset/404.gif') }}" alt="Not Found" class="w-64 h-64 mb-4">
+                                    <p class="text-center text-gray-600 text-lg font-semibold">
+                                       Pengguna "{{ request('search') }}" tidak ditemukan.
+                                    </p>
+                                    <p class="mt-2 text-center text-gray-500 text-md">
+                                        Silakan periksa kembali kata kunci pencarian Anda atau coba gunakan istilah
+                                        lain.
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+                    @else
                         @foreach ($users as $index => $item)
                             <tr class="border-b border-gray-200">
                                 <td class="p-2">{{ $item->username }}</td>
@@ -119,6 +108,7 @@
                             </tr>
                         @endforeach
                     </tbody>
+                    @endif
                 </table>
             </div>
 
@@ -188,7 +178,7 @@
         </div>
 
         <!-- Custom Pagination -->
-        @if ($users->total() > 5)
+        @if (!request('search'))
             <div class="flex flex-col items-center my-6">
                 <span class="text-sm text-gray-700 dark:text-gray-400">
                     Menampilkan <span
@@ -227,7 +217,16 @@
                 document.querySelector(modalId).classList.add('hidden');
             });
         });
-
+        document.addEventListener('DOMContentLoaded', function() {
+            @if ($errors->has('email'))
+                Swal.fire({
+                    title: 'Peringatan!',
+                    text: 'Email sudah digunakan, gunakan email yang lain.',
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                });
+            @endif
+        });
         function confirmDelete(id, nama) {
             Swal.fire({
                 title: 'Apakah Anda yakin?',

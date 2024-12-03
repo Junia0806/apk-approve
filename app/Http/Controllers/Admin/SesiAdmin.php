@@ -8,15 +8,30 @@ use App\Models\DataSesi;
 
 class SesiAdmin extends Controller
 {
-    // Menampilkan daftar data
-    public function index()
+
+    public function index(Request $request)
     {
-        // $sesi = DataSesi::all();
-        // return response()->json($sesi);
-        $sesi = DataSesi::orderBy('id_sesi', 'desc')->paginate(5);
+        $search = $request->input('search');
+    
+        $sesiQuery =  DataSesi::query()
+            ->when($search, function ($query) use ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('jam_awal', 'like', '%' . $search . '%')
+                    ->orWhere('id_sesi', 'like', '%' . $search . '%')
+                        ->orWhere('jam_akhir', 'like', '%' . $search . '%');
+                });
+            })
+            ->orderBy('id_sesi', 'desc');
+    
+        // Logika untuk menentukan apakah menggunakan pagination atau tidak
+        if ($search) {
+            $sesi = $sesiQuery->get(); // Ambil semua data tanpa pagination
+        } else {
+            $sesi = $sesiQuery->paginate(5); // Gunakan pagination jika tidak ada search
+        }
+    
         return view('admin.sesi', compact('sesi'));
     }
-
     // Menyimpan data baru
     public function store(Request $request)
     {
