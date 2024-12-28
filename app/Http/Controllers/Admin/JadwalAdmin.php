@@ -5,20 +5,16 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\DataJadwal; // Asumsi menggunakan model DataJadwal
+use App\Models\DataDosen; 
+use App\Models\DataMatkul;
 
 class JadwalAdmin extends Controller
 {
     // Menampilkan daftar data
     public function index()
     {
-        $jadwal = DataJadwal::all(); // Mengambil semua data jadwal
-        return response()->json($jadwal);
-    }
-
-    // Menampilkan form untuk membuat data baru
-    public function create()
-    {
-        return response()->json(['message' => 'Form untuk membuat data jadwal baru'], 200);
+        $dosenList = DataDosen::all();
+        return view('admin.jadwal', ['dosenList' => $dosenList]);
     }
 
     // Menyimpan data baru
@@ -47,25 +43,23 @@ class JadwalAdmin extends Controller
     // Menampilkan data tertentu berdasarkan ID
     public function show($id)
     {
-        $jadwal = DataJadwal::find($id);
+        // Mengambil data jadwal yang berhubungan dengan dosen
+        $jadwals = Datajadwal::with(['matkul', 'sesi', 'dosen'])
+            ->where('id_dosen', $id)  // Filter berdasarkan dosen yang dipilih
+            ->get()
+            ->map(function ($jadwal) {
+                return [
+                        'id_jadwal' => $jadwal->id_jadwal,
+                        'hari'      => $jadwal->hari,
+                        'jam_awal'  => $jadwal->sesi->jam_awal,
+                        'jam_akhir' => $jadwal->sesi->jam_akhir,
+                        'matkul'    => $jadwal->matkul->matkul,
+                        'dosen'     => $jadwal->dosen->nama_dosen,
+                ];
+            });
 
-        if (!$jadwal) {
-            return response()->json(['message' => 'Jadwal tidak ditemukan'], 404);
-        }
-
-        return response()->json($jadwal);
-    }
-
-    // Menampilkan form untuk mengedit data tertentu
-    public function edit($id)
-    {
-        $jadwal = DataJadwal::find($id);
-
-        if (!$jadwal) {
-            return response()->json(['message' => 'Jadwal tidak ditemukan'], 404);
-        }
-
-        return response()->json(['message' => 'Form untuk mengedit jadwal', 'data' => $jadwal]);
+        // // Mengembalikan response dalam format JSON
+        return response()->json($jadwals);
     }
 
     // Memperbarui data tertentu berdasarkan ID

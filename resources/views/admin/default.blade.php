@@ -110,7 +110,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin-jadwal') }}"
+                    <a href="{{ route('adminJadwal') }}"
                         class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <i
                             class="fa-regular fa-calendar-days w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>

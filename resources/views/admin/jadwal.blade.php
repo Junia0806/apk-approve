@@ -6,17 +6,19 @@
                 Tampilkan Berdasarkan Dosen
             </label>
             <select id="tahun_ajaran" name="tahun_ajaran"
-                class="block w-full sm:w-64 py-2 px-3 border border-gray-300 bg-white rounded-md shadow focus:ring-blue-600 focus:border-blue-600 sm:text-base text-gray-700">
-                <option>Rifqi Aji Widarso, S.T. M.T.</option>
-                <option>Adi Sucipto, S.ST., M.Tr.T.</option>
-                <option>Rani Purbaningtyas, S.Kom., MT.</option>
+                class="block w-full sm:w-64 py-2 px-3 border border-gray-300 bg-white rounded-md shadow focus:ring-blue-600 focus:border-blue-600 sm:text-base text-gray-700"
+                onchange="getJadwalByDosen(this)">
+                <option value="">Pilih Dosen</option>
+                @foreach ($dosenList as $dosen)
+                    <option value="{{ $dosen->id_dosen }}">{{ $dosen->nama_dosen }}</option>
+                @endforeach
             </select>
         </div>
 
         <div class="flex items-center justify-between p-2 border-b">
             <div class="flex-1 text-center">
                 <h1 class="text-3xl font-bold text-gray-800">Jadwal</h1>
-                <p class="text-lg">Rifqi Aji Widarso, S.T. M.T.</p>
+                <p id="nama-dosen" class="text-lg">Silahkan pilih nama dosen terlebih dahulu</p>
             </div>
             <button data-modal-target="crud-modal" data-modal-toggle="crud-modal"
                 class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 text-sm"
@@ -26,18 +28,18 @@
         </div>
 
         <div class="overflow-x-auto shadow rounded-lg border border-gray-200 bg-white my-4">
-            <table class="w-full border-separate border-spacing-0 text-sm text-black">
+            <table id="jadwalTable" class="w-full border-separate border-spacing-0 text-sm text-black">
                 <thead class="bg-gray-200 text-gray-800">
                     <tr>
-                        <th class="p-2 text-left">Hari</th>
-                        <th class="p-2 text-left">Sesi</th>
-                        <th class="p-2 text-left">Mata Kuliah</th>
-                        <th class="p-2 text-left">Dosen Pengampu</th>
-                        <th class="p-2 text-left">Aksi</th>
+                        <th class="p-2 text-center">Hari</th>
+                        <th class="p-2 text-center">Sesi</th>
+                        <th class="p-2 text-center">Mata Kuliah</th>
+                        <th class="p-2 text-center">Dosen Pengampu</th>
+                        <th colspan="2">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white">
-                    @php
+                    {{-- @php
                         // Array jadwal kuliah contoh
                         $jadwal = [
                             [
@@ -179,11 +181,73 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    @endforeach
+                       </div>
+                    @endforeach --}}
                 </tbody>
             </table>
+
+            <!-- Modal Edit Approval -->
+            <div id="edit-jadwal-modal" tabindex="-1" aria-hidden="true"
+                class="fixed inset-0 z-50 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto h-modal hidden">
+                <div class="relative w-full max-w-md h-full max-h-full md:h-auto">
+                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                        <button type="button" onclick="closeModal()"
+                            class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:text-gray-500 dark:hover:bg-gray-600 dark:hover:text-white">
+                            <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            <span class="sr-only">Close modal</span>
+                        </button>
+                        <div class="p-6 text-center">
+                            <h3 class="text-lg font-semibold text-gray-900">Edit Status jadwal</h3>
+                            <form id="edit-jadwal-form" method="POST" class="space-y-4">
+                                @csrf
+                                @method('PUT')
+                                <div class="text-left">
+                                    <label class="block text-sm font-medium text-gray-900">Tanggal</label>
+                                    <p id="modal-tanggal"></p>
+                                </div>
+                                <div class="text-left mt-4">
+                                    <label class="block text-sm font-medium text-gray-900">Hari</label>
+                                    <p id="modal-hari"></p>
+                                </div>
+                                <div class="text-left mt-4">
+                                    <label class="block text-sm font-medium text-gray-900">Jam</label>
+                                    <p id="modal-jam"></p>
+                                </div>
+                                <div class="text-left mt-4">
+                                    <label class="block text-sm font-medium text-gray-900">Nama Mahasiswa</label>
+                                    <p id="modal-nama"></p>
+                                </div>
+                                <div class="text-left mt-4">
+                                    <label class="block text-sm font-medium text-gray-900">Keperluan</label>
+                                    <p id="modal-keperluan"></p>
+                                </div>
+                                <div class="text-left mt-4">
+                                    <label class="block text-sm font-medium text-gray-900">Status jadwal</label>
+                                    <select id="status" name="status"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
+                                        required>
+                                        <option value="1">Disetujui</option>
+                                        <option value="2">Tidak Disetujui</option>
+                                    </select>
+                                </div>
+                                <div class="flex justify-end mt-4">
+                                    <button type="submit"
+                                        class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300 font-medium text-sm">
+                                        Simpan
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
+
         <!-- Modal Tambah Dosen -->
         <div id="crud-modal" tabindex="-1" aria-hidden="true"
             class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 flex items-center justify-center w-full h-[calc(100%-1rem)] max-h-full">
@@ -196,8 +260,8 @@
                             data-modal-toggle="crud-modal" data-modal-hide="crud-modal">
                             <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                                 viewBox="0 0 14 14">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                             </svg>
                             <span class="sr-only">Close modal</span>
                         </button>
@@ -273,20 +337,7 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        document.querySelectorAll('[data-modal-target]').forEach(button => {
-            button.addEventListener('click', () => {
-                const modalId = button.getAttribute('data-modal-target');
-                document.querySelector(modalId).classList.remove('hidden');
-            });
-        });
-        document.querySelectorAll('[data-modal-hide]').forEach(button => {
-            button.addEventListener('click', () => {
-                const modalId = button.getAttribute('data-modal-hide');
-                document.querySelector(modalId).classList.add('hidden');
-            });
-        });
-
-        function confirmDelete() {
+        function confirmDelete(id) {
             Swal.fire({
                 title: 'Apakah Anda yakin?',
                 text: "Anda tidak akan dapat mengembalikan sesi perkuliahan ini!",
@@ -303,5 +354,79 @@
                 }
             })
         }
+
+        function openEditModal(index) {
+            // Mengatur konten modal (sesuaikan dengan modal updatenya yaa!)
+            // document.getElementById(`modal-tanggal`).innerText = tanggal;
+            // document.getElementById(`modal-hari`).innerText = hari;
+            // document.getElementById(`modal-jam`).innerText = jam;
+            // document.getElementById(`modal-nama`).innerText = nama;
+            // document.getElementById(`modal-keperluan`).innerText = keperluan;
+            // document.getElementById(`status`).value = status;
+
+            // const form = document.getElementById('edit-approval-form');
+            // form.action = `/admin/bimbingan/${index}`;
+
+            // Menampilkan modal
+            const modal = document.getElementById(`edit-jadwal-modal`);
+            modal.classList.remove('hidden');
+        }
+
+        function getJadwalByDosen(selectedId) {
+            const dosenId = selectedId.value; // ID dosen yang terpilih
+            const dosenName = selectedId.options[selectedId.selectedIndex].text; // Nama dosen yang terpilih
+
+            // Memperbarui teks di elemen <p> dengan nama dosen yang terpilih
+            const namaDosenElement = document.getElementById('nama-dosen');
+            namaDosenElement.innerText = dosenName;
+
+            if (!dosenId) {
+                alert("Pilih dosen terlebih dahulu");
+                return;
+            }
+
+            fetch(`/admin/jadwal/${dosenId}`)
+                .then(response => response.json())
+                .then(jadwals => {
+                    const tableBody = document.getElementById('jadwalTable').querySelector('tbody');
+                    tableBody.innerHTML = ''; // Reset tabel    
+
+                    jadwals.forEach(jadwal => {
+                        const row = document.createElement('tr');
+
+                        row.innerHTML = `
+                            <td class="px-4 py-4 text-sm text-gray-700 text-center">${jadwal.hari}</td>
+                            <td class="px-4 py-4 text-sm text-gray-700 text-center">${jadwal.jam_awal} - ${jadwal.jam_akhir}</td>
+                            <td class="px-4 py-4 text-sm text-gray-700 text-center">${jadwal.matkul}</td>
+                            <td class="px-4 py-4 text-sm text-gray-700 text-center">${jadwal.dosen}</td>
+                            <td><button onclick="openEditModal(${jadwal.id_jadwal})"
+                                        class="bg-blue-500 text-white px-4 py-2 rounded">Edit</button></td>
+                            <td><button onclick="confirmDelete(${jadwal.id_jadwal})"
+                                        class="bg-blue-500 text-white px-4 py-2 rounded">Hapus</button></td></td>
+                        </td>
+                        `;
+                        tableBody.appendChild(row);
+
+                    });
+                });
+        }
+
+        function closeModal() {
+            const modal = document.getElementById(`edit-jadwal-modal`);
+            modal.classList.add('hidden');
+        }
+
+        document.querySelectorAll('[data-modal-target]').forEach(button => {
+            button.addEventListener('click', () => {
+                const modalId = button.getAttribute('data-modal-target');
+                document.querySelector(modalId).classList.remove('hidden');
+            });
+        });
+        document.querySelectorAll('[data-modal-hide]').forEach(button => {
+            button.addEventListener('click', () => {
+                const modalId = button.getAttribute('data-modal-hide');
+                document.querySelector(modalId).classList.add('hidden');
+            });
+        });
     </script>
 @endsection

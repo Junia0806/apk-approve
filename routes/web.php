@@ -127,6 +127,5 @@ Route::post('/sesi', [SesiAdmin::class, 'store'])->name('adminSesi.store');
 Route::put('/sesi/{id}', [SesiAdmin::class, 'update'])->name('adminSesi.update');
 Route::delete('/sesi/{id}', [SesiAdmin::class, 'destroy'])->name('adminSesi.destroy');
 
-Route::get('/admin-jadwal', function () {
-    return view('admin.jadwal');
-})->name('admin-jadwal');
+Route::get('/admin/jadwal', [JadwalAdmin::class, 'index'])->name('adminJadwal');
+Route::get('/admin/jadwal/{id}', [JadwalAdmin::class, 'show'])->name('adminJadwal.show');
