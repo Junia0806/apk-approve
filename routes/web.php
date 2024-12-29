@@ -60,9 +60,7 @@ Route::get('/beranda', function () {
 Route::get('/dashboard', function () {
     return view('guest.kehadiran-dosen');
 })->name('dashboard');
-Route::get('/bimbingan', function () {
-    return view('guest.jadwal-bimbingan');
-})->name('bimbingan');
+Route::get('/bimbingan', [JadwalGuest::class, 'index'])->name('bimbingan');
 Route::get('/pengajuan', function () {
     return view('guest.pengajuan');
 })->name('pengajuan');
