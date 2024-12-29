@@ -1,4 +1,4 @@
-{{ $dosenId = null; }}
+{{ $dosenId = null }}
 
 @extends('admin.default')
 @section('content')
@@ -291,7 +291,8 @@
                                     required>
 
                                     @foreach ($sesiList as $sesi)
-                                        <option value="{{ $sesi->id_sesi }}">{{ $sesi->jam_awal }} - {{ $sesi->jam_akhir }}</option>
+                                        <option value="{{ $sesi->id_sesi }}">{{ $sesi->jam_awal }} - {{ $sesi->jam_akhir }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -302,7 +303,7 @@
                                 <select name="mata_kuliah" id="mata_kuliah"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
                                     required>
-                                    
+
                                     @foreach ($matkulList as $matkul)
                                         <option value="{{ $matkul->id_matkul }}">{{ $matkul->matkul }}</option>
                                     @endforeach
@@ -354,17 +355,6 @@
         }
 
         function openEditModal(index) {
-            // Mengatur konten modal (sesuaikan dengan modal updatenya yaa!)
-            // document.getElementById(`modal-tanggal`).innerText = tanggal;
-            // document.getElementById(`modal-hari`).innerText = hari;
-            // document.getElementById(`modal-jam`).innerText = jam;
-            // document.getElementById(`modal-nama`).innerText = nama;
-            // document.getElementById(`modal-keperluan`).innerText = keperluan;
-            // document.getElementById(`status`).value = status;
-
-            // const form = document.getElementById('edit-approval-form');
-            // form.action = `/admin/bimbingan/${index}`;
-
             // Menampilkan modal
             const modal = document.getElementById(`edit-jadwal-modal`);
             modal.classList.remove('hidden');
