@@ -119,7 +119,6 @@ Route::get('/pengguna/{id}', [UserAdmin::class, 'show'])->name('adminPengguna.sh
 Route::put('/pengguna/{id}', [UserAdmin::class, 'update'])->name('adminPengguna.update');
 Route::delete('/pengguna/{id}', [UserAdmin::class, 'destroy'])->name('adminPengguna.destroy');
 
-
 Route::get('/sesi', [SesiAdmin::class, 'index'])->name('adminSesi');
 Route::post('/sesi', [SesiAdmin::class, 'store'])->name('adminSesi.store');
 Route::put('/sesi/{id}', [SesiAdmin::class, 'update'])->name('adminSesi.update');
@@ -127,3 +126,6 @@ Route::delete('/sesi/{id}', [SesiAdmin::class, 'destroy'])->name('adminSesi.dest
 
 Route::get('/admin/jadwal', [JadwalAdmin::class, 'index'])->name('adminJadwal');
 Route::get('/admin/jadwal/{id}', [JadwalAdmin::class, 'show'])->name('adminJadwal.show');
+Route::post('/admin/jadwal/create', [JadwalAdmin::class, 'store'])->name('adminJadwal.store');
+Route::put('/admin/jadwal/{id}', [JadwalAdmin::class, 'update'])->name('adminJadwal.update');
+Route::delete('/admin/jadwal/{id}', [JadwalAdmin::class, 'destroy'])->name('adminJadwal.destroy');

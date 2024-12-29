@@ -1,3 +1,5 @@
+{{ $dosenId = null; }}
+
 @extends('admin.default')
 @section('content')
     <div class="container mx-auto p-6 mt-12 min-h-screen">
@@ -8,7 +10,7 @@
             <select id="tahun_ajaran" name="tahun_ajaran"
                 class="block w-full sm:w-64 py-2 px-3 border border-gray-300 bg-white rounded-md shadow focus:ring-blue-600 focus:border-blue-600 sm:text-base text-gray-700"
                 onchange="getJadwalByDosen(this)">
-                <option value="">Pilih Dosen</option>
+                <option dosenListvalue="">Pilih Dosen</option>
                 @foreach ($dosenList as $dosen)
                     <option value="{{ $dosen->id_dosen }}">{{ $dosen->nama_dosen }}</option>
                 @endforeach
@@ -266,7 +268,7 @@
                             <span class="sr-only">Close modal</span>
                         </button>
                     </div>
-                    <form action="" method="POST" class="p-4">
+                    <form action="{{ route('adminJadwal.store') }}" method="POST" class="p-4">
                         @csrf
                         <div class="grid grid-cols-2 gap-4">
                             <div class="text-left">
@@ -287,10 +289,10 @@
                                 <select name="sesi" id="sesi"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
                                     required>
-                                    <option value="08:00 - 10:00">08:00 - 10:00</option>
-                                    <option value="10:00 - 12:00">10:00 - 12:00</option>
-                                    <option value="13:00 - 15:00">13:00 - 15:00</option>
-                                    <option value="15:00 - 17:00">15:00 - 17:00</option>
+
+                                    @foreach ($sesiList as $sesi)
+                                        <option value="{{ $sesi->id_sesi }}">{{ $sesi->jam_awal }} - {{ $sesi->jam_akhir }}</option>
+                                    @endforeach
                                 </select>
                             </div>
 
@@ -300,11 +302,10 @@
                                 <select name="mata_kuliah" id="mata_kuliah"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
                                     required>
-                                    <option value="Algoritma">Algoritma</option>
-                                    <option value="Database">Database</option>
-                                    <option value="Jaringan">Jaringan</option>
-                                    <option value="Pemrograman Web">Pemrograman Web</option>
-                                    <option value="Kecerdasan Buatan">Kecerdasan Buatan</option>
+                                    
+                                    @foreach ($matkulList as $matkul)
+                                        <option value="{{ $matkul->id_matkul }}">{{ $matkul->matkul }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="text-left">
@@ -313,14 +314,11 @@
                                 <select name="dosen" id="dosen"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
                                     required>
-                                    <option value="Dr. John Doe">Dr. John Doe</option>
-                                    <option value="Prof. Jane Doe">Prof. Jane Doe</option>
-                                    <option value="Dr. Alan Turing">Dr. Alan Turing</option>
-                                    <option value="Mr. Linus Torvalds">Mr. Linus Torvalds</option>
-                                    <option value="Ms. Ada Lovelace">Ms. Ada Lovelace</option>
+                                    @foreach ($dosenList as $dosen)
+                                        <option value="{{ $dosen->id_dosen }}">{{ $dosen->nama_dosen }}</option>
+                                    @endforeach
                                 </select>
                             </div>
-
                         </div>
 
                         <div class="flex justify-end mt-4">
