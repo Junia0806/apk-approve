@@ -13,10 +13,9 @@ class BimbinganAdmin extends Controller
     // Menampilkan daftar data
     public function index()
     {
-        // dd('Test Controller masuk'); 
         // Mengambil semua dosen untuk ditampilkan di dropdown
         $dosenList = DataDosen::all();
-        // dd($dosenList); 
+        
         // Mengirim data dosen ke view
         return view('admin.bimbingan', ['dosenList' => $dosenList]);
     }

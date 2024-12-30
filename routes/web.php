@@ -77,10 +77,12 @@ Route::get('/approval-dosen', function () {
 })->name('approval-dosen');
 
 //ADMIN
-
 Route::get('/admin-beranda', function () {
     return view('admin.beranda');
 })->name('admin-beranda');
+
+Route::get('/admin/dashboard', [DashboardAdmin::class, 'index'])->name('adminDashboard');
+Route::get('/admin/dashboard/{id}', [DashboardAdmin::class, 'show'])->name('adminDashboard.show');
 
 Route::get('/admin/kampus', [kampusAdmin::class, 'index'])->name('admin-kampus');
 Route::post('/adminKampus', [kampusAdmin::class, 'store'])->name('adminKampus.store');
@@ -92,7 +94,6 @@ Route::get('/admin/bimbingan', [BimbinganAdmin::class, 'index'])->name('adminBim
 Route::get('/admin/bimbingan/{id}', [BimbinganAdmin::class, 'show'])->name('adminBimbingan.show');
 Route::put('/admin/bimbingan/{id}', [BimbinganAdmin::class, 'update'])->name('adminBimbingan.update');
 
-
 Route::get('/presensi/{tanggal}', [PresensiAdmin::class, 'show'])->name('presensi.show');
 Route::put('/presensi/{id}', [PresensiAdmin::class, 'update'])->name('presensi.update');
 Route::get('/presensi', [PresensiAdmin::class, 'index'])->name('adminPresensi');
@@ -101,7 +102,6 @@ Route::get('/admin/prodi/{id_kampus}', [ProdiAdmin::class, 'index'])->name('admi
 Route::post('/adminProdi/{id_kampus}', [ProdiAdmin::class, 'store'])->name('adminProdi.store');
 Route::delete('/admin/prodi/{id_kampus}/{id_Prodi}', [ProdiAdmin::class, 'destroy'])->name('adminProdi.destroy');
 Route::put('/Prodi/update/{id_kampus}/{id_Prodi}', [ProdiAdmin::class, 'update'])->name('adminProdi.update');
-
 
 Route::get('/admin/dosen', [DosenAdmin::class, 'index'])->name('admin-dosen');
 Route::post('/adminDosen', [DosenAdmin::class, 'store'])->name('adminDosen.store');
