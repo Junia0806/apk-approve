@@ -36,15 +36,15 @@ class PengajuanGuest extends Controller
         // DISCLAIMER: PENGETESAN DATA DUMMY! MOHON GANTI KE METHOD POST DI ROUTESNYA (web.php)
 
         // Ambil data dari request (jika form sudah bisa, hapus data dummynya)
-        $nim        = "E41212006"; //$request->nim;
-        $nama       = "Mochammad Enrique"; //$request->nama;
+        $nim        = $request->nim;
+        $nama       = $request->nama;
         $kampus     = 4; // $request->kampus;
         $jurusan    = 1; //$request->jurusan;
         $prodi      = 2; // $request->prodi;
-        $dosen      = 4; //$request->dosen;
-        $tanggal    = Carbon::createFromFormat('Y-m-d', "2025-01-07")->format('Y-m-d'); //$request->tanggal;
-        $sesi       = 1; //$request->sesi;
-        $keperluan  = "Hidup numpang makan minum. Sisanya Gusti yang ngatur"; //$request->keperluan;
+        $dosen      = $request->dosen;
+        $tanggal    = $request->tanggal;
+        $sesi       = $request->sesi;
+        $keperluan  = $request->keperluan;
 
         // Cek apakah sudah ada data bimbingan dengan data tanggal, sesi, dan dosen yang sama
         $existingBimbingan = DataBimbingan::where('id_dosen', $dosen) 
@@ -88,6 +88,6 @@ class PengajuanGuest extends Controller
         $dataBimbingan->save();
 
         // Redirect dengan pesan sukses
-        return redirect()->back()->with('success', 'Data Bimbingan berhasil disimpan.');
+        return redirect()->route('bimbingan')->with('success', 'Data Bimbingan berhasil disimpan.');
     }
 }

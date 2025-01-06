@@ -64,8 +64,8 @@ Route::get('/dashboard', function () {
 Route::get('/bimbingan', [JadwalGuest::class, 'index'])->name('bimbingan');
 
 Route::get('/pengajuan', [PengajuanGuest::class, 'index'])->name('pengajuan');
-// Ganti ke POST setelah form sudah bekerja
-Route::get('/pengajuan/submit', [PengajuanGuest::class, 'store'])->name('submit-pengajuan');
+Route::post('/pengajuan/submit', [PengajuanGuest::class, 'store'])->name('submit-pengajuan');
+
 
 
 //DOSEN
