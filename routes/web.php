@@ -60,10 +60,13 @@ Route::get('/beranda', function () {
 Route::get('/dashboard', function () {
     return view('guest.kehadiran-dosen');
 })->name('dashboard');
+
 Route::get('/bimbingan', [JadwalGuest::class, 'index'])->name('bimbingan');
-Route::get('/pengajuan', function () {
-    return view('guest.pengajuan');
-})->name('pengajuan');
+
+Route::get('/pengajuan', [PengajuanGuest::class, 'index'])->name('pengajuan');
+// Ganti ke POST setelah form sudah bekerja
+Route::get('/pengajuan/submit', [PengajuanGuest::class, 'store'])->name('submit-pengajuan');
+
 
 //DOSEN
 Route::get('/beranda-dosen', function () {
