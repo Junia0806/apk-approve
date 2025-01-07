@@ -72,12 +72,10 @@ Route::post('/pengajuan/submit', [PengajuanGuest::class, 'store'])->name('submit
 Route::get('/beranda-dosen', function () {
     return view('dosen.beranda');
 })->name('beranda-dosen');
-Route::get('/presensi-dosen', function () {
-    return view('dosen.presensi-dosen');
-})->name('presensi-dosen');
-Route::get('/approval-dosen', function () {
-    return view('dosen.approval-dosen');
-})->name('approval-dosen');
+Route::get('/presensi-dosen', [PresensiDosen::class, 'index'])->name('presensi-dosen');
+Route::put('/presensi-dosen/{id}', [PresensiDosen::class, 'update'])->name('presensiDosen.update');
+Route::get('/dosen/bimbingan', [BimbinganDosen::class, 'index'])->name('approval-dosen');
+Route::put('/dosen/bimbingan/{id}', [BimbinganDosen::class, 'update'])->name('dosenBimbingan.update');
 
 //ADMIN
 Route::get('/admin-beranda', function () {
