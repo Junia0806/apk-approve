@@ -29,11 +29,11 @@ class UserAdmin extends Controller
             $users = $usersQuery->paginate(5); 
         }
         // $users = User::orderBy('id_user', 'desc')->paginate(5);
-        $totalDosen     = User::where('role', 'dosen')->count();
-        $totalTeknisi   = User::where('role', 'teknisi')->count();
+        $totalDosen     = User::where('role', 'Dosen')->count();
+        $totalAdmin     = User::where('role', 'Admin')->count();
 
         // return response()->json($users);
-        return view('admin.pengguna', compact('users', 'totalTeknisi', 'totalDosen'));
+        return view('admin.pengguna', compact('users', 'totalAdmin', 'totalDosen'));
     }
 
     // Menampilkan form untuk membuat data baru
@@ -45,19 +45,20 @@ class UserAdmin extends Controller
     // Menyimpan data baru
     public function store(Request $request)
     {
-        // Validasi data yang diterima dari request
-        $request->validate([
-            'username' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'role' => 'required|string',
-            'password' => 'required|string|min:6',
-        ]);
+        // // Validasi data yang diterima dari request
+        // $request->validate([
+        //     'username' => 'required|string|max:255',
+        //     'email' => 'required|email|unique:users,email',
+        //     'role' => 'required|string',
+        //     'password' => 'required|string|min:6',
+        // ]);
 
         // Membuat user baru dan menyimpan data
         $user = User::create([
-            'username' => $request->username,
+            'name'  => $request->nama,
             'email' => $request->email,
-            'role' => $request->role,
+            'nip'   => $request->nip,
+            'role'  => $request->role,
             'password' => Hash::make($request->password), // Mengenkripsi password
         ]);
 

@@ -24,8 +24,9 @@ class User extends Authenticatable
     // Tipe primary key
     protected $keyType = 'int';
     protected $fillable = [
-        'username',
+        'name',
         'email',
+        'nip',
         'role',
         'password',
     ];

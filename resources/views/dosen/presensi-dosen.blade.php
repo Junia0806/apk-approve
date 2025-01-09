@@ -5,7 +5,7 @@
         <div class="flex items-center justify-between p-2 border-b">
             <div class="flex-1 text-center">
                 <h1 class="text-3xl font-bold text-gray-800">Presensi Dosen</h1>
-                <p class="text-red-700 font-bold">Menampilkan seluruh data belum ada penyesuaian akun dosen yang login</p>
+                <p>{{ Auth::user()->name}}</p>
             </div>
 
         </div>

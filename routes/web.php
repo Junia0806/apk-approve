@@ -49,9 +49,9 @@ Route::post('/dashboard', [AuthController::class, 'login'])->name('login');
 Route::get('/admin-beranda', function () {
     return view('admin-beranda'); // Halaman untuk admin
 })->name('admin-beranda');
-Route::get('/beranda-dosen', function () {
-    return view('beranda-dosen'); // Halaman untuk dosen
-})->name('beranda-dosen');
+// Route::get('/beranda-dosen', function () {
+//     return view('beranda-dosen'); // Halaman untuk dosen
+// })->name('beranda-dosen');
 
 //GUEST (MAHASISWA)
 Route::get('/beranda', function () {
@@ -90,7 +90,6 @@ Route::post('/adminKampus', [kampusAdmin::class, 'store'])->name('adminKampus.st
 Route::delete('/admin/kampus/{id_kampus}', [kampusAdmin::class, 'destroy'])->name('adminKampus.destroy');
 Route::put('/kampus/update/{id_kampus}', [kampusAdmin::class, 'update'])->name('adminKampus.update');
 
-
 Route::get('/admin/bimbingan', [BimbinganAdmin::class, 'index'])->name('adminBimbingan');
 Route::get('/admin/bimbingan/{id}', [BimbinganAdmin::class, 'show'])->name('adminBimbingan.show');
 Route::put('/admin/bimbingan/{id}', [BimbinganAdmin::class, 'update'])->name('adminBimbingan.update');
@@ -98,6 +97,7 @@ Route::put('/admin/bimbingan/{id}', [BimbinganAdmin::class, 'update'])->name('ad
 Route::get('/presensi/{tanggal}', [PresensiAdmin::class, 'show'])->name('presensi.show');
 Route::put('/presensi/{id}', [PresensiAdmin::class, 'update'])->name('presensi.update');
 Route::get('/presensi', [PresensiAdmin::class, 'index'])->name('adminPresensi');
+Route::get('/absen', [PresensiAdmin::class, 'addAbsen'])->name('adminAbsen');
 
 Route::get('/admin/prodi/{id_kampus}', [ProdiAdmin::class, 'index'])->name('admin-prodi');
 Route::post('/adminProdi/{id_kampus}', [ProdiAdmin::class, 'store'])->name('adminProdi.store');

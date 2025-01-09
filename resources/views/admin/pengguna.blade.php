@@ -17,12 +17,12 @@
 
             </div>
 
-            <!-- Card Total Teknisi -->
+            <!-- Card Total Admin -->
             <div class="bg-white shadow-lg rounded-lg p-6">
                 <div class="flex items-center justify-between">
                     <div>
-                        <h2 class="text-lg font-semibold text-gray-700">Total Teknisi</h2>
-                        <p class="mt-2 text-3xl font-bold text-red-600">{{ $totalTeknisi }}</p>
+                        <h2 class="text-lg font-semibold text-gray-700">Total Admin</h2>
+                        <p class="mt-2 text-3xl font-bold text-red-600">{{ $totalAdmin }}</p>
                     </div>
                     <div class="bg-red-100 p-4 rounded-full flex items-center justify-center  w-16 h-16">
                         <i class="fa-solid fa-user-gear text-3xl text-red-600"></i>
@@ -64,8 +64,9 @@
                 <table class="w-full border-separate border-spacing-0 text-sm text-black">
                     <thead class="bg-gray-200 text-gray-800">
                         <tr>
-                            <th class="p-2 text-center">Username</th>
+                            <th class="p-2 text-center">Nama</th>
                             <th class="p-2 text-center">Email</th>
+                            <th class="p-2 text-center">NIP</th>
                             <th class="p-2 text-center">Role</th>
                             <th class="p-2 text-center">Aksi</th>
                         </tr>
@@ -89,8 +90,9 @@
                     @else
                         @foreach ($users as $index => $item)
                             <tr class="border-b border-gray-200">
-                                <td class="p-2">{{ $item->username }}</td>
+                                <td class="p-2">{{ $item->name }}</td>
                                 <td class="p-2">{{ $item->email }}</td>
+                                <td class="p-2">{{ $item->nip }}</td>
                                 <td class="p-2">{{ $item->role }} </td>
                                 <td class="p-2">
                                     <form id="delete-form-{{ $item->id_user }}"
@@ -100,7 +102,7 @@
                                         @method('DELETE')
                                         <button type="button"
                                             class="inline-flex items-center justify-center w-8 h-8 text-white bg-red-700 border border-red-600 rounded shadow-sm hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 ml-1"
-                                            onclick="confirmDelete('{{ $item->id_user }}', '{{ $item->username }}')">
+                                            onclick="confirmDelete('{{ $item->id_user }}', '{{ $item->name }}')">
                                             <i class="fa-regular fa-trash-can text-base"></i>
                                         </button>
                                     </form>
@@ -134,11 +136,11 @@
                     <form action="{{ route('adminPengguna.store') }}" method="POST" class="p-4">
                         @csrf
                         <div class="text-left">
-                            <label for="username" class="block text-sm font-medium text-gray-900">Username
+                            <label for="nama" class="block text-sm font-medium text-gray-900">Nama
                                 Pengguna</label>
-                            <input type="text" name="username" id="username"
+                            <input type="text" name="nama" id="nama"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
-                                placeholder="Masukkan Username Pengguna" required>
+                                placeholder="Masukkan Nama Pengguna" required>
                         </div>
 
                         <div class="text-left mt-4">
@@ -150,13 +152,20 @@
                         </div>
 
                         <div class="text-left mt-4">
-                            <label for="role" class="block text-sm font-medium text-gray-900">role</label>
+                            <label for="nip" class="block text-sm font-medium text-gray-900">NIP Pengguna</label>
+                            <input type="number" name="nip" id="nip"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
+                                placeholder="Masukkan NIP Pengguna" required>
+                        </div>
+
+                        <div class="text-left mt-4">
+                            <label for="role" class="block text-sm font-medium text-gray-900">Role</label>
                             <select name="role" id="role"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1"
                                 required>
                                 <option value="" disabled selected>Pilih role</option>
-                                <option value="dosen">Dosen</option>
-                                <option value="teknisi">Teknisi</option>
+                                <option value="Dosen">Dosen</option>
+                                <option value="Admin">Admin</option>
                             </select>
                         </div>
 

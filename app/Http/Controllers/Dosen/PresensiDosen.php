@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dosen;
 
 use Carbon\Carbon;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\DataPresensi;
 use App\Models\DataDosen;
@@ -13,75 +14,34 @@ class PresensiDosen extends Controller
     // Menampilkan daftar data
     public function index()
     {
-        $presensi = DataPresensi::with('dosen')
-            ->get()
-            ->map(function ($bimbingan) {
-                $tanggal = Carbon::parse($bimbingan->tgl_presensi);
+        // Ambil data dosen berdasarkan nip
+        $id_dosen = DataDosen::where('nip', Auth::user()->nip)->first();
 
+        $presensi = DataPresensi::with('dosen')
+            ->where('id_dosen', $id_dosen->id_dosen) // Gunakan id_dosen
+            ->orderBy('tgl_presensi', 'desc') // Urutkan berdasarkan tanggal terbaru
+            ->get()
+            ->map(function ($absen) {
                 // Pastikan data dosen tersedia
-                if ($bimbingan->dosen) {
-                    return [
-                        'id_presensi'  => $bimbingan->id_presensi,
-                        'tanggal'   => $tanggal->format('d-m-Y'),
-                        'hari'      => $bimbingan->hari,
-                        'id_dosen'  => $bimbingan->dosen->id_dosen,
-                        'nama_dosen' => $bimbingan->dosen->nama_dosen,
-                        'status'    => $bimbingan->status,
-                    ];
+                if (!$absen->dosen) {
+                    return null; // Abaikan data jika dosen tidak tersedia
                 }
+
+                $tanggal = Carbon::parse($absen->tgl_presensi);
+
+                return [
+                    'id_presensi'  => $absen->id_presensi,
+                    'tanggal'      => $tanggal->format('d-m-Y'),
+                    'hari'         => $absen->hari,
+                    'id_dosen'     => $absen->dosen->id_dosen,
+                    'nama_dosen'   => $absen->dosen->nama_dosen,
+                    'status'       => $absen->status,
+                ];
             })
+            ->filter() // Hapus entri null dari koleksi
             ->values(); // Mengatur ulang indeks array
 
         return view('dosen.presensi-dosen', compact('presensi'));
         // return response()->json($presensi);
-    }
-
-    // Menampilkan form untuk membuat data baru
-    public function create()
-    {
-        // Logika untuk menampilkan form pembuatan data
-    }
-
-    // Menyimpan data baru
-    public function store(Request $request)
-    {
-        // Logika untuk menyimpan data ke database
-    }
-
-    // Menampilkan data tertentu berdasarkan ID
-    public function show()
-    {
-        // Logika untuk menampilkan data tertentu
-    }
-
-    // Menampilkan form untuk mengedit data tertentu
-    public function edit()
-    {
-        // Logika untuk menampilkan form edit
-    }
-
-    // Memperbarui data tertentu berdasarkan ID
-
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'status' => 'required|integer|in:0,1,2'
-        ]);
-
-        $presensi = DataPresensi::find($id);
-        $presensi->status = $request->status;
-        $presensi->save();
-
-        return redirect()->back();
-        // $presensi->update([
-        //     'status' => $request->status,
-        // ]);
-
-    }
-
-    // Menghapus data tertentu berdasarkan ID
-    public function destroy()
-    {
-        // Logika untuk menghapus data
     }
 }

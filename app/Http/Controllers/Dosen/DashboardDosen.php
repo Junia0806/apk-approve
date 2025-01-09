@@ -3,49 +3,67 @@
 namespace App\Http\Controllers\Dosen;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Models\DataDosen;
+use App\Models\DataSesi;
+use App\Models\DataJadwal;
+use App\Models\DataBimbingan;
 
 class DashboardDosen extends Controller
 {
-    // Menampilkan daftar data
     public function index()
     {
-        // Logika untuk mengambil dan menampilkan data
-    }
+        // Ambil data dosen berdasarkan nip
+        $id = DataDosen::where('nip', Auth::user()->nip)->first();
 
-    // Menampilkan form untuk membuat data baru
-    public function create()
-    {
-        // Logika untuk menampilkan form pembuatan data
-    }
+        if (!$id) {
+            return response()->json(['error' => 'Data dosen tidak ditemukan'], 404);
+        }
 
-    // Menyimpan data baru
-    public function store(Request $request)
-    {
-        // Logika untuk menyimpan data ke database
-    }
+        // Mengambil Data Sesi
+        $dataSesi = DataSesi::all();
 
-    // Menampilkan data tertentu berdasarkan ID
-    public function show($id)
-    {
-        // Logika untuk menampilkan data tertentu
-    }
+        // Ambil Data Hari
+        $dataHari = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'];
 
-    // Menampilkan form untuk mengedit data tertentu
-    public function edit($id)
-    {
-        // Logika untuk menampilkan form edit
-    }
+        // Mengambil Data Jadwal Matkul Kuliah
+        $jadwals = DataJadwal::with(['matkul', 'sesi'])
+            ->where('id_dosen', $id->id_dosen)
+            ->get()
+            ->map(function ($jadwal) {
+                return [
+                    'hari'      => $jadwal->hari,
+                    'jam_awal'  => $jadwal->sesi->jam_awal,
+                    'jam_akhir' => $jadwal->sesi->jam_akhir,
+                    'kegiatan'  => $jadwal->matkul->matkul,
+                ];
+            });
 
-    // Memperbarui data tertentu berdasarkan ID
-    public function update(Request $request, $id)
-    {
-        // Logika untuk memperbarui data
-    }
+        // Mengambil Data Bimbingan
+        $bimbingans = DataBimbingan::with('sesi')
+            ->where('id_dosen', $id->id_dosen)
+            ->get()
+            ->map(function ($bimbingan) {
+                return [
+                    'hari'      => $bimbingan->hari,
+                    'jam_awal'  => $bimbingan->sesi->jam_awal,
+                    'jam_akhir' => $bimbingan->sesi->jam_akhir,
+                    'kegiatan'  => 'Bimbingan',
+                ];
+            });
 
-    // Menghapus data tertentu berdasarkan ID
-    public function destroy($id)
-    {
-        // Logika untuk menghapus data
+        // Gabungkan data jadwal dan bimbingan
+        $jadwalLengkap = $jadwals->concat($bimbingans);
+
+        // Urutkan berdasarkan hari dan jam
+        $hariUrutan = ['Senin' => 1, 'Selasa' => 2, 'Rabu' => 3, 'Kamis' => 4, 'Jumat' => 5];
+        $jadwalLengkap = $jadwalLengkap->sortBy(function ($item) use ($hariUrutan) {
+            return [$hariUrutan[$item['hari']], $item['jam_awal']];
+        })->groupBy('hari');
+
+        return response()->json($dataHari);
+
+        // return view('dosen.beranda', compact('dataHari','jadwalLengkap','dataSesi'));
     }
 }

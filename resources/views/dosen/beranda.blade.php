@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container mx-auto p-6 mt-12 bg-gray-50 rounded-lg shadow-lg min-h-screen">
-        <div class="flex flex-col sm:flex-row justify-between items-center mb-6 space-y-4 sm:space-y-0">
+        {{-- <div class="flex flex-col sm:flex-row justify-between items-center mb-6 space-y-4 sm:space-y-0">
 
             <div class="flex flex-col sm:flex-row justify-between items-center mb-6 space-y-4 sm:space-y-0">
                 <div class="flex items-center space-x-4 w-full sm:w-auto">
@@ -19,18 +19,17 @@
                     </select>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <!-- Elemen yang akan diunduh sebagai PDF -->
         <div class="overflow-x-auto shadow rounded-lg border border-gray-200 bg-white bg-nota" id="pdfContent">
             <div class="text-center mb-4">
                 <h1 class="text-2xl font-bold">Jadwal Kuliah dan Bimbingan</h1>
-                <p class="text-lg">Hari Senin</p>
+                <p class="text-lg">{{ Auth::user()->name }}</p>
             </div>
             <table class="w-full border-separate border-spacing-0 text-sm text-black" id="jadwalTable">
                 <thead class="bg-gray-200 text-gray-800">
                     <tr>
-
                         <th class="p-2 text-left">Jam</th>
                         <th class="p-2 text-left">Jadwal Kuliah</th>
                         <th class="p-2 text-left">Jadwal Bimbingan</th>

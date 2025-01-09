@@ -6,6 +6,7 @@
             <label for="tanggal" class="text-base font-semibold text-gray-800">Tampilkan Berdasarkan Tanggal</label>
             <input type="date" id="tanggal" name="tanggal" value="{{ date('Y-m-d') }}"
                 class="block w-full sm:w-64 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:ring-blue-600 focus:border-blue-600 sm:text-base text-gray-700">
+            <a href="{{ route('adminAbsen') }}" class="px-4 py-2 bg-gray-500 text-white rounded-md"> + Tambahkan Absen</a>
         </div>
 
         <div class="overflow-x-auto shadow rounded-lg border border-gray-200 bg-white bg-nota" id="pdfContent">
