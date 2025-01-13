@@ -44,4 +44,15 @@ class PresensiDosen extends Controller
         return view('dosen.presensi-dosen', compact('presensi'));
         // return response()->json($presensi);
     }
+
+    public function update(Request $request, $id)
+    {
+        $presensi = DataPresensi::find($id);
+
+        $presensi->update([
+            'status' => $request->status,
+        ]);
+
+        return redirect()->back()->with('success', 'Presensi semua dosen berhasil diupdate untuk hari ini.');
+    }
 }

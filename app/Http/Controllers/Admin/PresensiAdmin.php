@@ -59,9 +59,10 @@ class PresensiAdmin extends Controller
                     // Pastikan data dosen tersedia
                     if ($bimbingan->dosen) {
                         return [
+                            'id_presensi' => $bimbingan->id_presensi,
                             'tanggal'   => $tanggal->format('d-m-Y'),
                             'hari'      => $bimbingan->hari,
-                            'id_dosen'      => $bimbingan->dosen->id_dosen,
+                            'id_dosen'  => $bimbingan->dosen->id_dosen,
                             'nama_dosen' => $bimbingan->dosen->nama_dosen, 
                             'status'    => $bimbingan->status,
                         ];
@@ -76,14 +77,46 @@ class PresensiAdmin extends Controller
     // Memperbarui data tertentu berdasarkan ID
     public function update(Request $request, $id)
     {
+        // Validasi input
+        $request->validate([
+            'status' => 'required|integer',
+        ]);
+
+        // Cari data berdasarkan ID
         $presensi = DataPresensi::find($id);
 
+        // Cek jika data tidak ditemukan
+        if (!$presensi) {
+            return redirect()->back()->with('error', 'Data tidak ditemukan.');
+        }
+
+        // Update status jika data ditemukan
         $presensi->update([
             'status' => $request->status,
         ]);
 
-        return redirect()->back()->with('success', 'Presensi semua dosen berhasil diupdate untuk hari ini.');
-    }
+        // Kembali ke halaman sebelumnya dengan pesan sukses
+        return redirect()->back()->with('success', 'Presensi dosen berhasil diupdate untuk hari ini.');
+}
+
+
+//    public function update(Request $request, $id)
+// {
+//     $request->validate([
+//         'status' => 'required|integer',
+//     ]);
+
+//     $presensi = DataPresensi::find($id);
+//     if (!$presensi) {
+//         return response()->json(['message' => 'Data tidak ditemukan'], 404);
+//     }
+
+//     $presensi->status = 1;
+//     $presensi->save();
+
+//     return redirect()->back()->with('success', 'Presensi semua dosen berhasil diupdate untuk hari ini.');
+// }
+
 
     public function addAbsen()
     {

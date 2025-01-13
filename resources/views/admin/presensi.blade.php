@@ -41,15 +41,15 @@
                     @csrf
                     @method('PUT')
                     <div class="mb-4">
+                        <p id="ide"></p>
                         <label for="status" class="block text-gray-700 font-semibold mb-2">Status</label>
                         <select id="status" name="status" class="w-full border border-gray-300 rounded-md p-2">
-                            <option value="0">Belum Presensi</option>
                             <option value="1">Hadir</option>
                         </select>
                     </div>
                     <div class="flex justify-end space-x-4">
-                        <button type="button" onclick="closeModal()"
-                            class="px-4 py-2 bg-gray-500 text-white rounded-md">Batal</button>
+                    <button type="button" onclick="closeModal()" class="px-4 py-2 bg-gray-500 text-white rounded-md">Batal</button>
+
                         <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md">Simpan</button>
                     </div>
                 </form>
@@ -59,70 +59,77 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    document.getElementById('tanggal').addEventListener('change', function() {
-        const tanggal = this.value;
-        const dosenTableBody = document.getElementById('dosenTableBody');
-        const selectedDate = document.getElementById('selected-date');
+  document.getElementById('tanggal').addEventListener('change', function() {
+    const tanggal = this.value;
+    const dosenTableBody = document.getElementById('dosenTableBody');
+    const selectedDate = document.getElementById('selected-date');
 
-        if (tanggal) {
-            const options = {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            };
-            selectedDate.textContent = new Date(tanggal).toLocaleDateString('id-ID', options);
+    if (tanggal) {
+        const options = {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        };
+        selectedDate.textContent = new Date(tanggal).toLocaleDateString('id-ID', options);
 
-            fetch(`/presensi/${tanggal}`)
-                .then(response => response.json())
-                .then(data => {
-                    let rows = '';
-                    if (data.length > 0) {
-                        data.forEach(item => {
-                            rows += `
-                            <tr class="border-b border-gray-200 hover:bg-gray-50">
-                                <td class="p-2 text-sm font-medium text-gray-900">${item.nama_dosen}</td>
-                                <td class="p-2 text-sm font-medium text-gray-900">${item.status == 0 ? 'Belum Presensi' : 'Hadir'}</td>
-                                <td class="p-2 text-sm font-medium text-gray-900">
-                                    ${item.status == 0 
-                                        ? `<button class="edit-status-btn text-white bg-blue-500 hover:bg-blue-700 px-4 py-2 rounded-md" data-id="${item.id_dosen}" data-status="${item.status}">Edit Status</button>` 
-                                        : '<span class="text-red-500">Tidak Tersedia</span>'}
-                                </td>
-                            </tr>`;
-                        });
-                    } else {
-                        rows =
-                            `<tr><td colspan="3" class="p-4 text-gray-500">Data tidak ditemukan untuk tanggal tersebut.</td></tr>`;
-                    }
-                    dosenTableBody.innerHTML = rows;
-                })
-                .catch(() => {
-                    dosenTableBody.innerHTML =
-                        `<tr><td colspan="3" class="p-4 text-red-500">Gagal memuat data.</td></tr>`;
-                });
-        } else {
-            dosenTableBody.innerHTML =
-                `<tr><td colspan="3" class="p-4 text-gray-500">Pilih tanggal untuk menampilkan data presensi.</td></tr>`;
-        }
-    });
-
-    // Tambahkan event listener untuk tombol edit status
-    document.addEventListener('click', function(event) {
-        if (event.target.classList.contains('edit-status-btn')) {
-            const id = event.target.dataset.id;
-            const status = event.target.dataset.status;
-
-            document.getElementById('status').value = status;
-            const form = document.getElementById('edit-approval-form');
-            form.action = `/presensi/${id}`;
-
-            const modal = document.getElementById('edit-approval-modal');
-            modal.classList.remove('hidden');
-        }
-    });
-
-    function closeModal() {
-        const modal = document.getElementById('edit-approval-modal');
-        modal.classList.add('hidden');
+        fetch(`/presensi/${tanggal}`)
+            .then(response => response.json())
+            .then(data => {
+                let rows = '';
+                if (data.length > 0) {
+                    data.forEach(item => {
+                        rows += `
+                        <tr class="border-b border-gray-200 hover:bg-gray-50">
+                            <td class="p-2 text-sm font-medium text-gray-900">${item.nama_dosen}</td>
+                            <td class="p-2 text-sm font-medium text-gray-900">${item.status == 0 ? 'Belum Presensi' : 'Hadir'}</td>
+                            <td class="p-2 text-sm font-medium text-gray-900">
+                                ${item.status == 0 
+                                    ? `<button class="edit-status-btn text-white bg-blue-500 hover:bg-blue-700 px-4 py-2 rounded-md" data-id="${item.id_presensi}" data-status="${item.status}">Edit Status</button>` 
+                                    : '<span class="text-red-500">Tidak Tersedia</span>'}
+                            </td>
+                        </tr>`;
+                    });
+                } else {
+                    rows = `<tr><td colspan="3" class="p-4 text-gray-500">Data tidak ditemukan untuk tanggal tersebut.</td></tr>`;
+                }
+                dosenTableBody.innerHTML = rows;
+            })
+            .catch(() => {
+                dosenTableBody.innerHTML = `<tr><td colspan="3" class="p-4 text-red-500">Gagal memuat data.</td></tr>`;
+            });
+    } else {
+        dosenTableBody.innerHTML = `<tr><td colspan="3" class="p-4 text-gray-500">Pilih tanggal untuk menampilkan data presensi.</td></tr>`;
     }
+});
+
+// Tambahkan event listener untuk tombol edit status
+document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('edit-status-btn')) {
+        const id = event.target.dataset.id;
+        const status = event.target.dataset.status;
+
+        // Set value status di form
+        document.getElementById('status').value = status;
+        
+        // Set action URL form untuk update
+        const form = document.getElementById('edit-approval-form');
+        form.action = `/presensi/${id}`;
+
+        // Menampilkan ID presensi di modal
+        const idee = document.getElementById('ide');
+        idee.innerHTML = `ID Presensi: ${id}`;
+
+        // Tampilkan modal
+        const modal = document.getElementById('edit-approval-modal');
+        modal.classList.remove('hidden');
+    }
+});
+
+// Fungsi untuk menutup modal
+function closeModal() {
+    const modal = document.getElementById('edit-approval-modal');
+    modal.classList.add('hidden');
+}
+
 </script>
 @endsection
